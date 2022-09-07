@@ -1,9 +1,6 @@
 import spotipy
-import json
-import webbrowser
-import os
-from dotenv import load_dotenv
 from spotipy.oauth2 import SpotifyOAuth
+import json
 
 
 # load_dotenv('secrets.env')
@@ -29,19 +26,26 @@ from spotipy.oauth2 import SpotifyOAuth
 # print(json.dumps(user, sort_keys=True, indent=4))
 
 
-scope = "user-library-read"
+scope = "user-library-read, user-modify-playback-state"
 
 sp = spotipy.Spotify(auth_manager=SpotifyOAuth(scope=scope))
 
-# Can only do 50 at a time, will need to loop through and do multiple calls to get everything
+# This prints the name of every one of their liked songs, could save this to a data structure 
+
 likes = sp.current_user_saved_tracks(20, 0, 'US')
 
 print(json.dumps(likes ,sort_keys=True, indent=4))
 
 while likes:
     for track in likes['items']:
-        print(track['track']['name'])
+        # print(track['track']['name'])
+        pass
     if likes['next']:
         likes = sp.next(likes)
     else:
         likes = None
+
+# Now try to play some music? 
+songs_to_play = ["spotify:track:6Rb0ptOEjBjPPQUlQtQGbL"]
+
+sp.start_playback(uris=songs_to_play)
