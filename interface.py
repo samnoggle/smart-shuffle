@@ -3,6 +3,7 @@ from tkinter import ttk
 
 
 class App(tk.Tk):
+
     def __init__(self):
         super().__init__()
 
@@ -20,27 +21,31 @@ class App(tk.Tk):
         style.configure('.', font=('Helvetica', 20))
 
         # Adding widjets
-        play = tk.Button(self, text="Play/Pause")
-        play.place(relx=0.5, rely=0.5, anchor='center')
+        self.play = tk.Button(self, text="Play/Pause", command=self.playPauseMusic)
+        self.play.place(relx=0.5, rely=0.5, anchor='center')
 
-        skip = tk.Button(self, text ="Skip")
-        skip.place(relx=0.8, rely=0.5, anchor='e')
+        self.skip = tk.Button(self, text ="Skip", command=self.skipMusic)
+        self.skip.place(relx=0.8, rely=0.5, anchor='e')
 
-    def playMusic(self):
-        # First change the button to pause?
-        pass
+    def playPauseMusic(self):
+        print("The music should play or pause now!")
 
-    def pauseMusic(self):
-        # First change button to play?
-        pass
+        #Pause
+        if self.play["text"] == "Pause":
+            self.play["text"] = "Play"
+            # pause method goes here
+        else:
+            self.play["text"] = "Pause"
+            # play method goes here
 
     def skipMusic(self):
         # Do the skipping !!
+        # will call a method to skip a song
+        print("The music should skip now!")
         pass
 
 
 
-                
 
 
 if __name__ == "__main__":
