@@ -1,12 +1,19 @@
 import tkinter as tk
 from tkinter import ttk
+import spotipy
+from spotipy.oauth2 import SpotifyOAuth
+import json
 
 
 class App(tk.Tk):
 
-    def __init__(self):
+    def __init__(self, sp):
         super().__init__()
 
+        # The spotify auth object to use for controlling Spotify
+        self.spot = sp
+
+        # Window setup
         self.title('Smart Shuffle')
         self.geometry("400x300+50+50")
         self.eval('tk::PlaceWindow . center')
@@ -16,12 +23,18 @@ class App(tk.Tk):
         img = tk.PhotoImage(file='assets/icon.gif')
         self.iconphoto(True, img)
 
-        # Style
+        # Window style
         style = ttk.Style(self)
         style.configure('.', font=('Helvetica', 20))
 
-        # Adding widjets
-        self.play = tk.Button(self, text="Play/Pause", command=self.playPauseMusic)
+        #Welcome message
+        var = tk.StringVar()
+        label = tk.Label(self, textvariable=var)
+        var.set(f"Welcome, {sp.current_user()['display_name']}")
+        label.pack()
+
+        # Buttons
+        self.play = tk.Button(self, text="Play", command=self.playPauseMusic)
         self.play.place(relx=0.5, rely=0.5, anchor='center')
 
         self.skip = tk.Button(self, text ="Skip", command=self.skipMusic)
@@ -42,12 +55,13 @@ class App(tk.Tk):
         # Do the skipping !!
         # will call a method to skip a song
         print("The music should skip now!")
-        pass
-
-
 
 
 
 if __name__ == "__main__":
-    app = App()
+
+    scope = "user-library-read, user-modify-playback-state"
+    sp = spotipy.Spotify(auth_manager=SpotifyOAuth(scope=scope))
+
+    app = App(sp)
     app.mainloop()
