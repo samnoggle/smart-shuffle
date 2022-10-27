@@ -4,7 +4,6 @@ track ids that correlate to the space's indices for track look-up
 """
 import pandas as pd
 from annoy import AnnoyIndex
-import random
 
 # Load in the track features dataset
 tracks = pd.read_csv("data/tf_mini.csv")
@@ -26,34 +25,28 @@ normal_tracks = (normal_tracks - normal_tracks.min()) / \
     (normal_tracks.max()-normal_tracks.min())
 
 
-# Create a list of vectors with the track features
+# Create the space
 
-# Create the space and add each vector inside
-
-
-
-
-
-
-
-
-
-f = 29  # Length of item vector that will be indexed
-
-t = AnnoyIndex(f, 'euclidean')
+# Length of item vector that will be indexed
+f = 29  
+space = AnnoyIndex(f, 'euclidean')
 
 # Adding vectors into the space w/ randomized values just to test
-for i in range(1000):
-    v = [random.gauss(0, 1) for z in range(f)]
-    t.add_item(i, v)
+for i, row in normal_tracks.iterrows():
+    rowVect = row.tolist()
+    space.add_item(i, rowVect)
 
 # I dont know what this forest of 10 trees is meant to do
-t.build(10)  # 10 trees
+space.build(10)  # 10 trees
+
+
+
+# Testing out some things
 
 # Save the space?
-t.save('test.ann')
+space.save('test.ann')
 
 # Now you're able to load the space again from the file
-u = AnnoyIndex(f, 'angular')
+u = AnnoyIndex(f, 'euclidean')
 u.load('test.ann')  # super fast, will just mmap the file
 print(u.get_nns_by_item(0, 1000))  # will find the 1000 nearest neighbors
