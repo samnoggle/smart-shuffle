@@ -2,6 +2,7 @@
 Calculates different distance metrics    
 """
 import numpy as np
+from scipy import spatial
 
 
 def averageTracks(trackList):
@@ -28,16 +29,19 @@ def euclidian(p1, p2):
 def manhattan(p1, p2):
     return sum(abs(val1-val2) for val1, val2 in zip(p1, p2))
 
+
 def unit_vector(vector):
     """ Returns the unit vector of the vector.  """
     return vector / np.linalg.norm(vector)
+
 
 def angle_between(p1, p2):
     v1_u = unit_vector(p1)
     v2_u = unit_vector(p2)
     return np.arccos(np.clip(np.dot(v1_u, v2_u), -1.0, 1.0))
 
-def find_neighbor_class(k, vector, skipped, listened):
+
+def is_neighbor_skipped(k, vector, skipped, listened):
     """
     Finds if the nearest neighbor(s) were skipped or not
 
@@ -45,7 +49,22 @@ def find_neighbor_class(k, vector, skipped, listened):
     :param vector: The vector to find neighbors for
     :param skipped: vectors for skipped songs in the sessison
     :param listened: vectors for non-skipped songs in the session
+    :returns: True if the closest neighbor was skipped
     """
+    # combine all the vectors, but save the midpoint
+    skippedCutoff = skipped.size
+    sessionSongs = np.concatenate((skipped, listened), axis=0)
+
+    # build and use spatial tree to quickly find closest neighbor
+    tree = spatial.KDTree(sessionSongs)
+    t = tree.query(vector)
+
+    if t[1] > skippedCutoff - 1:
+        return True
+    else:
+        return False
+
+
 
 
 ############## DRIVER CODE #################
