@@ -22,6 +22,15 @@ def averageTracks(trackList):
     return averageVect
 
 
+def weightedAverageTracks(trackList):
+    """
+    Calculates a weighted average vector with the array of song vectors given
+
+    :param trackList: Numpy array of song vectors
+    """
+    pass
+
+
 def euclidian(p1, p2):
     return np.linalg.norm(p1 - p2)
 
@@ -63,8 +72,6 @@ def is_neighbor_skipped(k, vector, skipped, listened):
         return True
     else:
         return False
-
-
 
 
 ############## DRIVER CODE #################

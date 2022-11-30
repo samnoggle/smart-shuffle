@@ -25,8 +25,6 @@ while(1):
     subset = data[position : position + entries]
 
     # Update to continue
-    if not data.iloc[position]:
-        break
     position = position + entries
     sessionID = data['session_id'].iloc[position]
     entries = data['session_length'].iloc[position]

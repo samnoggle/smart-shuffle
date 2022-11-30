@@ -5,6 +5,8 @@ Also has a list of the track IDs mapped for the matrix's rows
 import pandas as pd
 import time
 
+import session as s
+
 
 def loadTracks():
     """
@@ -34,9 +36,12 @@ def loadTracks():
 
     end = time.time()
     t = end - start
-    print("Loading {0} tracks took {1} seconds".format(len(trackID),t))
+    print("Loading {0} tracks took {1} seconds".format(len(trackID), t))
 
-    return (trackID, tracks)
+    # set the public index lists
+    s.trackID = trackID
+    s.tracks = tracks
+
 
 def loadSessionContext():
 
@@ -44,33 +49,27 @@ def loadSessionContext():
 
     sessions = []
 
-    # Load the session dataset 
+    # Load the session dataset
     data = pd.read_csv("data/log_mini.csv")
 
     # First session ID and number of rows to start
-    entries = data['session_length'].iloc[0] 
+    entries = data['session_length'].iloc[0]
     position = 0
-
 
     while(position + entries < len(data.index)):
 
         # Make them into a subset dataset
-        subset = data[position : position + entries]
+        subset = data[position: position + entries]
 
         # Update to continue
         position = position + entries
         entries = data['session_length'].iloc[position]
 
-        # Append the session to a list of dataframes 
+        # Append the session to a list of dataframes
         sessions.append(subset)
-    
+
     end = time.time()
     t = end - start
-    print("Loading {0} sessions took {1} seconds".format(len(sessions),t))
-
+    print("Loading {0} sessions took {1} seconds".format(len(sessions), t))
 
     return sessions
-
-
-
-
