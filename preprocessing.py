@@ -39,8 +39,8 @@ def loadTracks():
     print("Loading {0} tracks took {1} seconds".format(len(trackID), t))
 
     # set the public index lists
-    s.trackID = trackID
-    s.tracks = tracks
+    s.trackIDs = trackID
+    s.tracks = tracks.to_numpy()
 
 
 def loadSessionContext():

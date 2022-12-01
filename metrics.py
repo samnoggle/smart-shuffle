@@ -50,7 +50,7 @@ def angle_between(p1, p2):
     return np.arccos(np.clip(np.dot(v1_u, v2_u), -1.0, 1.0))
 
 
-def is_neighbor_skipped(k, vector, skipped, listened):
+def is_neighbor_skipped(vector, skipped, listened):
     """
     Finds if the nearest neighbor(s) were skipped or not
 
@@ -61,7 +61,7 @@ def is_neighbor_skipped(k, vector, skipped, listened):
     :returns: True if the closest neighbor was skipped
     """
     # combine all the vectors, but save the midpoint
-    skippedCutoff = skipped.size
+    skippedCutoff = len(skipped)
     sessionSongs = np.concatenate((skipped, listened), axis=0)
 
     # build and use spatial tree to quickly find closest neighbor

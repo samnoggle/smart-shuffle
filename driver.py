@@ -18,10 +18,10 @@ for i, session in enumerate(sessions):
     finalSong = current.userTracks[-1]
 
     # get all those variables
-    if current.nonSkipped:
-        euclidLastSkip = m.euclidian(finalSong, current.nonSkipped[-1])
-        manLastSkip = m.manhattan(finalSong, current.nonSkipped[-1])
-        avSkipped = m.averageTracks()
+    if current.skipped:
+        euclidLastSkip = m.euclidian(finalSong, current.skipped[-1])
+        manLastSkip = m.manhattan(finalSong, current.skipped[-1])
+        avSkipped = m.averageTracks(current.skipped)
         eucAvSkip = m.euclidian(finalSong, avSkipped)
         angleAvSkip = m.angle_between(finalSong, avSkipped)
     else:
@@ -32,20 +32,22 @@ for i, session in enumerate(sessions):
         
 
     if current.nonSkipped:
-        euclidLastPlay = m.euclidian(finalSong, current.skipped[-1])
-        manLastPlay = m.manhattan(finalSong, current.skipped[-1])
-        avPlayed = m.averageTracks()
+        euclidLastPlay = m.euclidian(finalSong, current.nonSkipped[-1])
+        manLastPlay = m.manhattan(finalSong, current.nonSkipped[-1])
+        avPlayed = m.averageTracks(current.nonSkipped)
         eucAvPlay = m.euclidian(finalSong, avPlayed)
-        angleAvSkip = m.angle_between(finalSong, avPlayed)
+        angleAvPlay = m.angle_between(finalSong, avPlayed)
     else:
-        euclidLastSkip = 0
+        euclidLastPlay = 0
         manLastPlay = 0
         eucAvPlay = 0
         angleAvPlay = 0
 
+    prevSongSkipped = current.isPrevSongSkipped(len(current.userTracks) - 1)
+
+    neighborSkipped = m.is_neighbor_skipped(finalSong, current.skipped, current.nonSkipped)
 
 
-   
     # 0 euclidian from last played
     metrics.append(euclidLastPlay)
 
@@ -71,7 +73,11 @@ for i, session in enumerate(sessions):
     metrics.append(angleAvSkip)
 
     # 8 is the prev song skipped?
+    metrics.append(prevSongSkipped)
 
     # 9 is the nearest neighbor skipped?
+    metrics.append(neighborSkipped)
+
 
     # make a record for the decision tree
+    print(metrics)

@@ -1,6 +1,0 @@
-look for high lienar seperability with feautures between skipped and not 
-between average positibe and average egative 
-
-takelike 5 of highest values 
-
-for each feature calc the avg for skipped and non skipped then get the differences between each! highest value is good!
