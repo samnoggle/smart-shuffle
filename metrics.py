@@ -62,6 +62,13 @@ def is_neighbor_skipped(vector, skipped, listened):
     """
     # combine all the vectors, but save the midpoint
     skippedCutoff = len(skipped)
+
+    # Handle if one of the arrays is empty
+    if not skipped:
+        return False
+    elif not listened:
+        return True
+    
     sessionSongs = np.concatenate((skipped, listened), axis=0)
 
     # build and use spatial tree to quickly find closest neighbor

@@ -10,6 +10,7 @@ tracks = []
 class Session:
     def __init__(self, _contextMatrix):
         self.contextMatrix = _contextMatrix
+        self.sessionID = _contextMatrix.iloc[0]['session_id']
 
         # The answer, only used for training
         self.isLastSkipped = False
