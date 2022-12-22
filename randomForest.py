@@ -4,11 +4,8 @@ Decision tree to decide if a token is a claim number or not
 import pickle
 import pandas as pd
 from sklearn.ensemble import RandomForestClassifier
-from sklearn.datasets import make_classification
-from sklearn.model_selection import train_test_split
-from sklearn import metrics, preprocessing
-from io import StringIO
-from tabulate import tabulate
+from sklearn.model_selection import RandomizedSearchCV, train_test_split
+from sklearn import metrics
 
 
 def create_tree():
@@ -24,29 +21,25 @@ def create_tree():
 
 
     # split dataset into features and target variable(is_skipped)
-    # feature_cols = ['euclidLastPlay', 'euclidLastSkip', 'manLastPlay', 'manLastSkip', 'eucAvPlay', 'eucAvSkip', 'angleAvPlay', 'angleAvSkip', 'prevSongSkipped', 'neighborSkipped', 'context_switch','context_type','date','hist_user_behavior_is_shuffle','hist_user_behavior_n_seekback','hist_user_behavior_n_seekfwd','hist_user_behavior_reason_end','hist_user_behavior_reason_start','hour_of_day','long_pause_before_play','no_pause_before_play','premium','session_length','session_position', 'short_pause_before_play']
-    X = data.loc[:, ~data.columns.isin(['not_skipped', 'track_id_clean', 'session_id', 'date', 'session_length'])]
+    X = data.loc[:, ~data.columns.isin(['not_skipped', 'session_id'])]
     y = data.not_skipped
 
 
-    # specify categories
-    context_type = ['user_collection', 'editorial_playlist', 'catalog', 'radio', 'personalized_playlist', 'charts']
-    behave_end = ['trackdone', 'fwdbtn', 'clickrow', 'logout', 'endplay', 'backbtn', 'remote' ]
-    behave_start = ['fwdbtn', 'clickrow', 'appload', 'playbtn', 'backbtn', 'remote']
-
     # Think I need to do encoding on the data for categorical string features...
-    X = pd.get_dummies(X, columns=['context_type', 'hist_user_behavior_reason_end', 'hist_user_behavior_reason_start'])
+    # DEPRECIATED BECUASE NO LONGER USING THIS DATA
+    # X = pd.get_dummies(X, columns=['context_type', 'hist_user_behavior_reason_start'])
     
     print(X.to_string(max_rows=10))
   
-
     # Split dataset into training set and test set
     # 70% training and 30% test to start
     X_train, X_test, y_train, y_test = train_test_split(
-        X, y, test_size=0.3, random_state=1)
+        X, y, test_size=0.3, random_state=0)
 
     # Create Decision Tree classifer object
-    rf_tree = RandomForestClassifier(max_depth=10, random_state=0)
+    rf_tree = RandomForestClassifier(max_depth=6, random_state=0)
+
+    # clf = RandomizedSearchCV(rf_model, model_params, n_iter=100, cv=5, random_state=1)
 
     # Train Decision Tree Classifer
     rf_tree = rf_tree.fit(X_train, y_train)
@@ -60,6 +53,21 @@ def create_tree():
     # Model Accuracy, how often is the classifier correct?
     print("Model Accuracy:", metrics.accuracy_score(y_test, y_pred))
 
+
+    #Visualize important features
+    feature_imp = pd.Series(rf_tree.feature_importances_,index=X.columns).sort_values(ascending=False)
+
+    import matplotlib.pyplot as plt
+    import seaborn as sns
+
+    # Creating a bar plot
+    sns.barplot(x=feature_imp, y=feature_imp.index)
+    # Add labels to your graph
+    plt.xlabel('Feature Importance Score')
+    plt.ylabel('Features')
+    plt.title("Visualizing Important Features")
+    plt.legend()
+    plt.show()
 
 
 def load_model():
@@ -76,15 +84,3 @@ def main():
 # Calling main function
 if __name__ == "__main__":
     main()
-
-
-    # add conversion rate and the original price
-    # and dollars too
-    # asl for local curr first
-
-
-    # flat rate depending on client
-    # 3% on the currency exch
-    # 3% percent for creditcard if they use
-    # nothing if cash deposit
-    # 1% for payment withing 8 days
