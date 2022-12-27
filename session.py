@@ -9,19 +9,24 @@ tracks = []
 
 class Session:
     def __init__(self, _contextMatrix):
+        '''
+        HERE I WILL HAVE TO ACCOUNT FOR FIRST HALF OF SESSION AND SECOND HALF
+        CALCULATE METRICS ABOUT THE METADATA OF THE FIRST HALF
+        FOR NOW IT IS AS IF I ONLY HAVE THE BARE BONES SECOND HALF W/O ANY METADATA
+        '''
         self.contextMatrix = _contextMatrix
         self.sessionID = _contextMatrix.iloc[0]['session_id']
 
         # The answer, only used for training
         self.isLastSkipped = False
 
-        # all of the track vectors in a users session
+        # ALL of the track feature vectors in a users session
         self.userTracks = []
 
-        # all of the skipped track vectors in a users session
+        # all of the skipped track feature vectors in a users session
         self.skipped = []
 
-        # all of the non skipped track vectors ina  users session
+        # all of the non skipped track feature vectors in a users session
         self.nonSkipped = []
 
         self.initializeTracks()

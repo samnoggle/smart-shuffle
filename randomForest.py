@@ -20,7 +20,7 @@ def create_tree():
     data = pd.read_csv("lastSongMetrics.csv", header=0)
 
 
-    # split dataset into features and target variable(is_skipped)
+    # split dataset into features and target variable(not_skipped)
     X = data.loc[:, ~data.columns.isin(['not_skipped', 'session_id'])]
     y = data.not_skipped
 
@@ -37,7 +37,7 @@ def create_tree():
         X, y, test_size=0.3, random_state=0)
 
     # Create Decision Tree classifer object
-    rf_tree = RandomForestClassifier(max_depth=6, random_state=0)
+    rf_tree = RandomForestClassifier(max_depth=5, random_state=0)
 
     # clf = RandomizedSearchCV(rf_model, model_params, n_iter=100, cv=5, random_state=1)
 

@@ -15,10 +15,8 @@ import pandas as pd
 p.loadTracks()
 sessions = p.loadSessionContext()
 
-# initialize dataframe
-newData = pd.DataFrame(columns=['euclidLastPlay', 'euclidLastSkip', 'manLastPlay', 'manLastSkip',
-                  'eucAvPlay', 'eucAvSkip', 'angleAvPlay', 'angleAvSkip', 'prevSongSkipped', 'neighborSkipped'])
-
+# make a list of dicts to append them to eachother and convert to a dataframe at the end
+listData = []
 
 # going through each session
 start = time.time()
@@ -78,7 +76,7 @@ for i, session in enumerate(sessions):
     metrics['eucAvPlay'] = eucAvPlay
 
     # 5 euclidian from averaged skipped vector
-    metrics['eucAvSkip'] =- eucAvSkip
+    metrics['eucAvSkip'] = eucAvSkip
 
     # 6 angle with averaged played vector
     metrics['angleAvPlay'] = angleAvPlay
@@ -91,6 +89,12 @@ for i, session in enumerate(sessions):
 
     # 9 is the nearest neighbor skipped?
     metrics['neighborSkipped'] = neighborSkipped
+
+    # trying to check out the metrics, debug stuff
+    f = open('output.txt', 'a')
+    if euclidLastPlay == 0:
+        f.write(f"Distance between {finalSong} and {current.nonSkipped[-1]} was zero")
+    f.close()
 
 
     # Get the context of the session and add these features to the dictionary
@@ -114,13 +118,15 @@ for i, session in enumerate(sessions):
     context = {'session_id': context['session_id'],
                'not_skipped': context['not_skipped']}
 
-    # merge the context and the metrics
+    # merge the context and the metrics into one dictionary
     dictData = context | metrics
 
-
     # make a row for the decision tree (song context, all metrics, and if it was skipped or not)
-    newData = newData.append(dictData, ignore_index=True)
+    listData.append(dictData)
 
+
+# turn to datatframe
+newData = pd.DataFrame.from_records(listData)
 
 # Spit it out to a csv
 newData.to_csv('lastSongMetrics.csv', index=False)
