@@ -37,7 +37,7 @@ def create_tree():
         X, y, test_size=0.3, random_state=0)
 
     # Create Decision Tree classifer object
-    rf_tree = RandomForestClassifier(max_depth=5, random_state=0)
+    rf_tree = RandomForestClassifier(max_depth=6, random_state=0)
 
     # clf = RandomizedSearchCV(rf_model, model_params, n_iter=100, cv=5, random_state=1)
 
@@ -47,11 +47,10 @@ def create_tree():
     # Save model
     pickle.dump(rf_tree, open('randForest.sav', 'wb'))
 
-    # Predict the response for test dataset
-    y_pred = rf_tree.predict(X_test)
 
     # Model Accuracy, how often is the classifier correct?
-    print("Model Accuracy:", metrics.accuracy_score(y_test, y_pred))
+    print('Training Accuracy : ', metrics.accuracy_score(y_train, rf_tree.predict(X_train))*100) # accuracy on train set
+    print('Validation Accuracy : ', metrics.accuracy_score(y_test, rf_tree.predict(X_test))*100) # accuracy on test set
 
 
     #Visualize important features

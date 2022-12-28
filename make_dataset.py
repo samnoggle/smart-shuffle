@@ -11,6 +11,7 @@ import metrics as m
 import time
 import pandas as pd
 
+
 # grabbing the data
 p.loadTracks()
 sessions = p.loadSessionContext()
@@ -28,15 +29,14 @@ for i, session in enumerate(sessions):
     # what if one of the lists is empty? they skipped all/listened to all?
 
     metrics = {}
-    finalSong = current.userTracks[-1]
 
     # get all those variables
     if current.skipped:
-        euclidLastSkip = m.euclidian(finalSong, current.skipped[-1])
-        manLastSkip = m.manhattan(finalSong, current.skipped[-1])
+        euclidLastSkip = m.euclidian(current.finalSong, current.skipped[-1])
+        manLastSkip = m.manhattan(current.finalSong, current.skipped[-1])
         avSkipped = m.averageTracks(current.skipped)
-        eucAvSkip = m.euclidian(finalSong, avSkipped)
-        angleAvSkip = m.angle_between(finalSong, avSkipped)
+        eucAvSkip = m.euclidian(current.finalSong, avSkipped)
+        angleAvSkip = m.angle_between(current.finalSong, avSkipped)
     else:
         euclidLastSkip = -1
         manLastSkip = -1
@@ -44,21 +44,21 @@ for i, session in enumerate(sessions):
         angleAvSkip = -1
 
     if current.nonSkipped:
-        euclidLastPlay = m.euclidian(finalSong, current.nonSkipped[-1])
-        manLastPlay = m.manhattan(finalSong, current.nonSkipped[-1])
+        euclidLastPlay = m.euclidian(current.finalSong, current.nonSkipped[-1])
+        manLastPlay = m.manhattan(current.finalSong, current.nonSkipped[-1])
         avPlayed = m.averageTracks(current.nonSkipped)
-        eucAvPlay = m.euclidian(finalSong, avPlayed)
-        angleAvPlay = m.angle_between(finalSong, avPlayed)
+        eucAvPlay = m.euclidian(current.finalSong, avPlayed)
+        angleAvPlay = m.angle_between(current.finalSong, avPlayed)
     else:
         euclidLastPlay = -1
         manLastPlay = -1
         eucAvPlay = -1
         angleAvPlay = -1
 
-    prevSongSkipped = current.isPrevSongSkipped(len(current.userTracks) - 1)
+    prevSongPlayed = current.contextMatrix.iloc[-2]['not_skipped']
 
     neighborSkipped = m.is_neighbor_skipped(
-        finalSong, current.skipped, current.nonSkipped)
+        current.finalSong, current.skipped, current.nonSkipped)
 
     # 0 euclidian from last played
     metrics['euclidLastPlay'] = euclidLastPlay
@@ -85,16 +85,10 @@ for i, session in enumerate(sessions):
     metrics['angleAvSkip'] = angleAvSkip
 
     # 8 is the prev song skipped?
-    metrics['prevSongSkipped'] = prevSongSkipped
+    metrics['prevSongPlayed'] = prevSongPlayed
 
     # 9 is the nearest neighbor skipped?
     metrics['neighborSkipped'] = neighborSkipped
-
-    # trying to check out the metrics, debug stuff
-    f = open('output.txt', 'a')
-    if euclidLastPlay == 0:
-        f.write(f"Distance between {finalSong} and {current.nonSkipped[-1]} was zero")
-    f.close()
 
 
     # Get the context of the session and add these features to the dictionary
@@ -123,7 +117,6 @@ for i, session in enumerate(sessions):
 
     # make a row for the decision tree (song context, all metrics, and if it was skipped or not)
     listData.append(dictData)
-
 
 # turn to datatframe
 newData = pd.DataFrame.from_records(listData)

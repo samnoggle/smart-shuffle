@@ -10,7 +10,7 @@ tracks = []
 class Session:
     def __init__(self, _contextMatrix):
         '''
-        HERE I WILL HAVE TO ACCOUNT FOR FIRST HALF OF SESSION AND SECOND HALF
+        HERE I WILL HAVE TO EVENTUALLY ACCOUNT FOR FIRST HALF OF SESSION AND SECOND HALF
         CALCULATE METRICS ABOUT THE METADATA OF THE FIRST HALF
         FOR NOW IT IS AS IF I ONLY HAVE THE BARE BONES SECOND HALF W/O ANY METADATA
         '''
@@ -18,7 +18,17 @@ class Session:
         self.sessionID = _contextMatrix.iloc[0]['session_id']
 
         # The answer, only used for training
-        self.isLastSkipped = False
+        self.isLastSkipped = _contextMatrix.iloc[-1]['not_skipped']
+
+        # The final song in a session 
+        finalRow = self.contextMatrix.tail(1)
+        trackID = finalRow.iloc[0]['track_id_clean']
+        trackIndex = trackIDs.index(trackID)
+        self.finalSong = tracks[trackIndex]
+        
+        # TAKEN OUT AND THEN REMOVED FROM CONTEXT MATRIX
+        self.contextMatrix.drop(index=self.contextMatrix.index[-1],axis=0,inplace=True)
+
 
         # ALL of the track feature vectors in a users session
         self.userTracks = []
@@ -36,6 +46,7 @@ class Session:
         Uses the content matrix of a session to initialize 
         the skipped and nonskipped lists
         """
+
         # puts the track vector of each song into a list of the user's history
         # and sorts into divided lists skipped and nonSkipped
         index = self.contextMatrix.index
@@ -50,27 +61,27 @@ class Session:
 
             self.userTracks.append(trackFeats)
 
-            # the last track will not be added into the 2 lists
-            if i != number_of_rows - 1:
-                if notSkipped:
-                    self.nonSkipped.append(trackFeats)
-                else:
-                    self.skipped.append(trackFeats)
+            # add it to respective list
+            if notSkipped:
+                self.nonSkipped.append(trackFeats)
+            else:
+                self.skipped.append(trackFeats)
 
-    def isPrevSongSkipped(self, k):
-        """
-        Returns true if the previous song of k was skipped
-        :param k: the index in userTracks
-        """
-        if (k < len(self.userTracks)) and (len(self.userTracks) >= 2):
-            prevVect = self.userTracks[k - 1]
+# broke
+    # def isPrevSongSkipped(self, k):
+    #     """
+    #     Returns true if the previous song of k was skipped
+    #     :param k: the index in userTracks
+    #     """
+    #     if (k < len(self.userTracks)) and (len(self.userTracks) >= 2):
+    #         prevVect = self.userTracks[k - 1]
 
-            # this seems like a botched way to do this
-            for array in self.skipped:
-                comparison = prevVect == array
-                equal_arrays = comparison.all()
-                if equal_arrays == True:
-                    return True
-            return False
+    #         # this seems like a botched way to do this
+    #         for array in self.skipped:
+    #             comparison = prevVect == array
+    #             equal_arrays = comparison.all()
+    #             if equal_arrays == True:
+    #                 return True
+    #         return False
             
 
