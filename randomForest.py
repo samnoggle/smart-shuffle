@@ -17,11 +17,11 @@ def create_tree():
     """
 
     # load dataset
-    data = pd.read_csv("lastSongMetrics.csv", header=0)
+    data = pd.read_csv("training_data/lastSongMetrics.csv", header=0)
 
 
     # split dataset into features and target variable(not_skipped)
-    X = data.loc[:, ~data.columns.isin(['not_skipped', 'session_id'])]
+    X = data.loc[:, ~data.columns.isin(['not_skipped', 'session_id', 'prevSongPlayed'])]
     y = data.not_skipped
 
 

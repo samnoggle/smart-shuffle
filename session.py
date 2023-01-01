@@ -8,29 +8,26 @@ tracks = []
 
 
 class Session:
-    def __init__(self, _contextMatrix):
+    def __init__(self, _contextMatrix, _finalRow):
         '''
         HERE I WILL HAVE TO EVENTUALLY ACCOUNT FOR FIRST HALF OF SESSION AND SECOND HALF
         CALCULATE METRICS ABOUT THE METADATA OF THE FIRST HALF
         FOR NOW IT IS AS IF I ONLY HAVE THE BARE BONES SECOND HALF W/O ANY METADATA
         '''
         self.contextMatrix = _contextMatrix
+        self.finalRow = _finalRow
         self.sessionID = _contextMatrix.iloc[0]['session_id']
 
         # The answer, only used for training
         self.isLastSkipped = _contextMatrix.iloc[-1]['not_skipped']
 
-        # The final song in a session 
-        finalRow = self.contextMatrix.tail(1)
-        trackID = finalRow.iloc[0]['track_id_clean']
+        # Initialize the track features of final song
+        trackID = self.finalRow.iloc[0]['track_id_clean']
         trackIndex = trackIDs.index(trackID)
         self.finalSong = tracks[trackIndex]
         
-        # TAKEN OUT AND THEN REMOVED FROM CONTEXT MATRIX
-        self.contextMatrix.drop(index=self.contextMatrix.index[-1],axis=0,inplace=True)
-
-
-        # ALL of the track feature vectors in a users session
+        # the track feature vectors in a users session except final one
+        # this is needed to preserve their order
         self.userTracks = []
 
         # all of the skipped track feature vectors in a users session
@@ -49,12 +46,10 @@ class Session:
 
         # puts the track vector of each song into a list of the user's history
         # and sorts into divided lists skipped and nonSkipped
-        index = self.contextMatrix.index
-        number_of_rows = len(index)
+        for track in self.contextMatrix.iterrows():
 
-        for i, track in self.contextMatrix.iterrows():
-            trackID = track['track_id_clean']
-            notSkipped = track['not_skipped']
+            trackID = track[1]['track_id_clean']
+            notSkipped = track[1]['not_skipped']
 
             trackIndex = trackIDs.index(trackID)
             trackFeats = tracks[trackIndex]
@@ -66,6 +61,7 @@ class Session:
                 self.nonSkipped.append(trackFeats)
             else:
                 self.skipped.append(trackFeats)
+
 
 # broke
     # def isPrevSongSkipped(self, k):

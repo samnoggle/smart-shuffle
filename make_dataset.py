@@ -14,7 +14,8 @@ import pandas as pd
 
 # grabbing the data
 p.loadTracks()
-sessions = p.loadSessionContext()
+sessions = p.loadSession() # list of dataframes
+finalSongs = p.loadFinalTracks() # dataframe of final rows
 
 # make a list of dicts to append them to eachother and convert to a dataframe at the end
 listData = []
@@ -22,12 +23,14 @@ listData = []
 # going through each session
 start = time.time()
 for i, session in enumerate(sessions):
+
+    # get the correct final row
+    finalRow = finalSongs.loc[finalSongs['session_id'] == session.iloc[0]['session_id']]
+
     # make a session object
-    current = s.Session(session)
+    current = s.Session(session, finalRow)
 
     # calculate metrics (predicting final song in session)
-    # what if one of the lists is empty? they skipped all/listened to all?
-
     metrics = {}
 
     # get all those variables
@@ -122,7 +125,7 @@ for i, session in enumerate(sessions):
 newData = pd.DataFrame.from_records(listData)
 
 # Spit it out to a csv
-newData.to_csv('lastSongMetrics.csv', index=False)
+newData.to_csv('training_data/lastSongMetrics.csv', index=False)
 
 
 end = time.time()
