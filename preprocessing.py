@@ -102,6 +102,8 @@ def loadSession():
     :return: a list of dataframes (sessions w/o final song)
     """
     sessions = []
+    start = time.time()
+
     data = pd.read_csv("split_data/clean_sessions.csv")
 
     entries = data['session_length'].iloc[0]
@@ -116,9 +118,14 @@ def loadSession():
         # Update to continue
         position = position + entries
         entries = data['session_length'].iloc[position]
+        entries -= 1 # adjust for final song again
 
         # Append the session to a list of dataframes
         sessions.append(subset)
+        
+    end = time.time()
+    t = end - start
+    print("Loading {0} sessions took {1} seconds".format(len(sessions), t))
 
     return sessions
 

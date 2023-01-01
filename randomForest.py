@@ -21,7 +21,7 @@ def create_tree():
 
 
     # split dataset into features and target variable(not_skipped)
-    X = data.loc[:, ~data.columns.isin(['not_skipped', 'session_id', 'prevSongPlayed'])]
+    X = data.loc[:, ~data.columns.isin(['not_skipped', 'session_id'])]
     y = data.not_skipped
 
 
