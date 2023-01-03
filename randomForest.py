@@ -24,7 +24,6 @@ def create_tree():
     X = data.loc[:, ~data.columns.isin(['not_skipped', 'session_id'])]
     y = data.not_skipped
 
-
     # Think I need to do encoding on the data for categorical string features...
     # DEPRECIATED BECUASE NO LONGER USING THIS DATA
     # X = pd.get_dummies(X, columns=['context_type', 'hist_user_behavior_reason_start'])

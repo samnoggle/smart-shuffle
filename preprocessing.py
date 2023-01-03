@@ -11,7 +11,7 @@ def loadTracks():
     """
     Creates a numpy array of every track from the dataset
     (with a list of track ids for mapping)
-    """
+    """    
 
     start = time.time()
 
@@ -23,6 +23,9 @@ def loadTracks():
     tracks['mode'] = tracks['mode'].str.replace('minor', '0')
 
     tracks["mode"] = tracks["mode"].astype(int)
+
+    # initialize it as a global dataset (for dataset creation)
+    s.trackData = tracks.copy()
 
     # Extract track_id column into a list
     trackID = tracks['track_id'].to_list()
@@ -36,6 +39,7 @@ def loadTracks():
     end = time.time()
     t = end - start
     print("Loading {0} tracks took {1} seconds".format(len(trackID), t))
+
 
     # set the public index lists
     s.trackIDs = trackID

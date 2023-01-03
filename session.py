@@ -1,10 +1,14 @@
 """
     Class to store a session's data
 """
+import pandas as pd
+
 # public track index where all track features
 # are loaded into
 trackIDs = []
 tracks = []
+
+trackData = pd.DataFrame()
 
 
 class Session:

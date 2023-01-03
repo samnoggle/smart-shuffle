@@ -115,8 +115,16 @@ for i, session in enumerate(sessions):
     context = {'session_id': context['session_id'],
                'not_skipped': context['not_skipped']}
 
+    # get the original track features of the final track
+    finalRowID = finalRow.iloc[0]['track_id_clean']
+
+    finalTrackFeatures = s.trackData.loc[s.trackData['track_id'] == finalRowID]
+    finalTrackFeatures.drop(columns='track_id', inplace=True)
+
+    features = finalTrackFeatures.to_dict(orient='records')
+
     # merge the context and the metrics into one dictionary
-    dictData = context | metrics
+    dictData = context | metrics | features[0]
 
     # make a row for the decision tree (song context, all metrics, and if it was skipped or not)
     listData.append(dictData)
