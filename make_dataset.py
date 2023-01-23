@@ -1,5 +1,5 @@
 """
-    Generates a new dataset.
+    Generates a new dataset for the decision tree.
     Each record contains session context about the final track in
     a session, distance metrics between it and the session history, and 
     whether or not that song was skipped (for training)
@@ -93,10 +93,13 @@ for i, session in enumerate(sessions):
     # 9 is the nearest neighbor skipped?
     metrics['neighborSkipped'] = neighborSkipped
 
-
-    # Get the context of the session and add these features to the dictionary
-    # NEVERMIND THIS PART. CONTEXT IS NOT ALLOWED TO BE KNOWN WHEN PREDICTING
-    # ONLY KEEP THE SESSION ID HERE AND NOT SKIPPED TO CLASSIFY
+    # Grab the Metadata for the dataset
+    percentSkipped = (len(current.skipped) / len(current.userTracks)) * 100
+    metadata = {'hour_of_day': current.hourOfDay,
+                'day_of_week': current.dayOfWeek,
+                'month': current.month,
+                'premium': current.premium,
+                'percent_skipped': percentSkipped}
 
     r = current.contextMatrix.iloc[-1:]
     index = r.index
@@ -104,13 +107,6 @@ for i, session in enumerate(sessions):
 
     # Turns into nested dict with the index, remove that
     context = context[index.start]
-
-    # # Irrelevant context data (may change)
-    # # Will keep the session ID, but need to remove for tree
-    # del context['skip_1']
-    # del context['skip_2']
-    # del context['skip_3']
-    # del context['track_id_clean']
 
     context = {'session_id': context['session_id'],
                'not_skipped': context['not_skipped']}
@@ -124,7 +120,7 @@ for i, session in enumerate(sessions):
     features = finalTrackFeatures.to_dict(orient='records')
 
     # merge the context and the metrics into one dictionary
-    dictData = context | metrics | features[0]
+    dictData = context | metrics | metadata | features[0]
 
     # make a row for the decision tree (song context, all metrics, and if it was skipped or not)
     listData.append(dictData)
@@ -135,9 +131,12 @@ newData = pd.DataFrame.from_records(listData)
 # Spit it out to a csv
 newData.to_csv('training_data/lastSongMetrics.csv', index=False)
 
-
+# Time taken
 end = time.time()
 t = end - start
-
 print("Calculating metrics for {0} sessions took {1} seconds".format(
     len(sessions), t))
+
+# Average track length
+avTrackLength = sum(s.sessionLengths)/len(s.sessionLengths)
+print("Each session on average was {0} tracks long".format(avTrackLength))

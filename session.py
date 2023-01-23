@@ -2,25 +2,32 @@
     Class to store a session's data
 """
 import pandas as pd
+import datetime
 
 # public track index where all track features
 # are loaded into
 trackIDs = []
 tracks = []
 
+# for keeping track of session length on average
+sessionLengths = []
+
 trackData = pd.DataFrame()
 
 
 class Session:
     def __init__(self, _contextMatrix, _finalRow):
-        '''
-        HERE I WILL HAVE TO EVENTUALLY ACCOUNT FOR FIRST HALF OF SESSION AND SECOND HALF
-        CALCULATE METRICS ABOUT THE METADATA OF THE FIRST HALF
-        FOR NOW IT IS AS IF I ONLY HAVE THE BARE BONES SECOND HALF W/O ANY METADATA
-        '''
+
         self.contextMatrix = _contextMatrix
         self.finalRow = _finalRow
         self.sessionID = _contextMatrix.iloc[0]['session_id']
+
+        # metadata
+        self.hourOfDay = self.finalRow.iloc[0]['hour_of_day']
+        self.date = self.finalRow.iloc[0]['date']
+        self.dayOfWeek = self.getDayOfWeek()
+        self.month = self.getMonth()
+        self.premium = self.finalRow.iloc[0]['premium']
 
         # The answer, only used for training
         self.isLastSkipped = _contextMatrix.iloc[-1]['not_skipped']
@@ -65,23 +72,14 @@ class Session:
                 self.nonSkipped.append(trackFeats)
             else:
                 self.skipped.append(trackFeats)
+        sessionLengths.append(len(self.userTracks))
 
+    def getDayOfWeek(self):
+        date = datetime.datetime.strptime(self.date, "%Y-%m-%d").date()
+        x = date.weekday()
+        return x
 
-# broke
-    # def isPrevSongSkipped(self, k):
-    #     """
-    #     Returns true if the previous song of k was skipped
-    #     :param k: the index in userTracks
-    #     """
-    #     if (k < len(self.userTracks)) and (len(self.userTracks) >= 2):
-    #         prevVect = self.userTracks[k - 1]
-
-    #         # this seems like a botched way to do this
-    #         for array in self.skipped:
-    #             comparison = prevVect == array
-    #             equal_arrays = comparison.all()
-    #             if equal_arrays == True:
-    #                 return True
-    #         return False
-            
-
+    def getMonth(self):
+        date = datetime.datetime.strptime(self.date, "%Y-%m-%d").date()
+        x = date.month
+        return x

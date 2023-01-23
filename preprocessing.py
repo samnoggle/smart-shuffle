@@ -61,8 +61,9 @@ def loadCompleteSessionContext():
     # Load the session dataset
     data = pd.read_csv("raw_data/log_mini.csv")
 
-    # Remove the metadata - needed when using the mini data
-    data.drop(columns=['skip_1','skip_2','skip_3','context_switch','no_pause_before_play','short_pause_before_play','long_pause_before_play','hist_user_behavior_n_seekfwd','hist_user_behavior_n_seekback','hist_user_behavior_is_shuffle','hour_of_day','date','premium','context_type','hist_user_behavior_reason_start','hist_user_behavior_reason_end'], inplace=True)
+    # Remove the metadata
+    # Keep: hour of day, date, premium
+    data.drop(columns=['skip_1','skip_2','skip_3','context_switch','no_pause_before_play','short_pause_before_play','long_pause_before_play','hist_user_behavior_n_seekfwd','hist_user_behavior_n_seekback','hist_user_behavior_is_shuffle', 'context_type','hist_user_behavior_reason_start','hist_user_behavior_reason_end'], inplace=True)
 
 
     # First session ID and number of rows to start
