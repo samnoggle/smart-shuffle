@@ -5,6 +5,8 @@ Also has a list of the track IDs mapped for the matrix's rows
 import pandas as pd
 import time
 import session as s
+import glob
+import os
 
 
 def loadTracks():
@@ -48,7 +50,7 @@ def loadTracks():
 
 def loadCompleteSessionContext():
     """
-    Loads in a csv and grabs all of the COMPLETE sessions
+    Loads in multiple csvs and grabs all of the COMPLETE sessions
     
 
     :return: a list of dataframes (complete sessions)
@@ -58,8 +60,24 @@ def loadCompleteSessionContext():
 
     sessions = []
 
-    # Load the session dataset
-    data = pd.read_csv("raw_data/log_mini.csv")
+    # # Load the mini session dataset
+    # data = pd.read_csv("raw_data/log_mini.csv")
+
+    # the path to your csv file directory
+    mycsvdir = '../training_set'
+
+    # get all the csv files in that directory (assuming they have the extension .csv)
+    csvfiles = glob.glob(os.path.join(mycsvdir, '*.csv'))
+
+    # loop through the files and read them in with pandas
+    dataframes = []  # a list to hold all the individual pandas DataFrames
+    for csvfile in csvfiles:
+        df = pd.read_csv(csvfile)
+        dataframes.append(df)
+
+    # concatenate them all together
+    data = pd.concat(dataframes, ignore_index=True)
+
 
     # Remove the metadata
     # Keep: hour of day, date, premium
