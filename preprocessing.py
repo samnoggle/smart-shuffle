@@ -72,7 +72,8 @@ def loadCompleteSessionContext():
     # loop through the files and read them in with pandas
     dataframes = []  # a list to hold all the individual pandas DataFrames
     for csvfile in csvfiles:
-        df = pd.read_csv(csvfile)
+        df = pd.read_csv(csvfile, dtype={'session_id': str, 'session_position': int, 'session_length': int, 'track_id_clean': str, 'skip_1': bool, 'skip_2': bool, 'skip_3': bool, 'not_skipped': bool, 'context_switch': int, 'no_pause_before_play': int, 'short_pause_before_play': int,
+                         'long_pause_before_play': int, 'hist_user_behavior_n_seekfwd': int, 'hist_user_behavior_n_seekback': int, 'hist_user_behavior_is_shuffle': bool, 'hour_of_day': int, 'date': str, 'premium': bool, 'context_type': str, 'hist_user_behavior_reason_start': str, 'hist_user_behavior_reason_end': str})
         dataframes.append(df)
 
     # concatenate them all together
