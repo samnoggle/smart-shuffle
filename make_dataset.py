@@ -33,7 +33,7 @@ for i, session in enumerate(sessions):
     except:
         print("This session was fricked up:")
         print(session)
-        print(finalRow)
+        print(finalRow.iloc[0]['track_id_clean'])
         continue
 
     # calculate metrics (predicting final song in session)
