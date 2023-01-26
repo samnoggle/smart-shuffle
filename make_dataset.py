@@ -28,7 +28,13 @@ for i, session in enumerate(sessions):
     finalRow = finalSongs.loc[finalSongs['session_id'] == session.iloc[0]['session_id']]
 
     # make a session object
-    current = s.Session(session, finalRow)
+    try:
+        current = s.Session(session, finalRow)
+    except:
+        print("This session was fricked up:")
+        print(session)
+        print(finalRow)
+        continue
 
     # calculate metrics (predicting final song in session)
     metrics = {}
