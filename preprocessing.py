@@ -64,7 +64,7 @@ def loadCompleteSessionContext():
     # data = pd.read_csv("raw_data/log_mini.csv")
 
     # the path to your csv file directory
-    mycsvdir = '../training_set'
+    mycsvdir = '../new_data/training_set'
 
     # get all the csv files in that directory (assuming they have the extension .csv)
     csvfiles = glob.glob(os.path.join(mycsvdir, '*.csv'))
