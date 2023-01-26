@@ -120,8 +120,11 @@ for i, session in enumerate(sessions):
     # get the original track features of the final track
     finalRowID = finalRow.iloc[0]['track_id_clean']
 
+    # removed inplace = true which i think was removing from the original data. oopsie!!
+    # this was making it so songs cant be used twice bc the first time you use it, it
+    # removes the ID from the original data hahhahahhhahhahhh oops
     finalTrackFeatures = s.trackData.loc[s.trackData['track_id'] == finalRowID]
-    finalTrackFeatures.drop(columns='track_id', inplace=True)
+    finalTrackFeatures = finalTrackFeatures.drop(columns='track_id')
 
     features = finalTrackFeatures.to_dict(orient='records')
 
