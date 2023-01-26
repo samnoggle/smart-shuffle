@@ -105,7 +105,7 @@ def loadFinalTracks():
     """
 
     # Load the finalSong dataset
-    data = pd.read_csv("split_data/final_row.csv")
+    data = pd.read_csv("split_data/final_row0.csv")
 
     return data
 
@@ -118,7 +118,7 @@ def loadSession():
     sessions = []
     start = time.time()
 
-    data = pd.read_csv("split_data/clean_sessions.csv")
+    data = pd.read_csv("split_data/clean_sessions0.csv")
 
     entries = data['session_length'].iloc[0]
     entries -= 1 # its one less because the final song is missing here
