@@ -48,9 +48,9 @@ def loadTracks():
     s.tracks = tracks.to_numpy()
 
 
-def loadCompleteSessionContext():
+def loadCompleteSessionContext(csvfile):
     """
-    Loads in multiple csvs and grabs all of the COMPLETE sessions
+    Loads in one csv and grabs all of the COMPLETE sessions
     
 
     :return: a list of dataframes (complete sessions)
@@ -63,27 +63,12 @@ def loadCompleteSessionContext():
     # Load the mini session dataset
     # data = pd.read_csv("raw_data/log_mini.csv")
 
-    # the path to your csv file directory
-    mycsvdir = '../new_data/training_set'
 
-    # get all the csv files in that directory (assuming they have the extension .csv)
-    csvfiles = glob.glob(os.path.join(mycsvdir, '*.csv'))
-
-    # loop through the files and read them in with pandas
-    dataframes = []  # a list to hold all the individual pandas DataFrames
-    count = 0
-    for csvfile in csvfiles:
-        count += 1
-        try:
-            df = pd.read_csv(csvfile, dtype={'session_id': str, 'session_position': int, 'session_length': int, 'track_id_clean': str, 'skip_1': str, 'skip_2': str, 'skip_3': str, 'not_skipped': bool, 'context_switch': str, 'no_pause_before_play': str, 'short_pause_before_play': str,
-                       'long_pause_before_play': str, 'hist_user_behavior_n_seekfwd': str, 'hist_user_behavior_n_seekback': str, 'hist_user_behavior_is_shuffle': bool, 'hour_of_day': int, 'date': str, 'premium': bool, 'context_type': str, 'hist_user_behavior_reason_start': str, 'hist_user_behavior_reason_end': str})
-            dataframes.append(df)
-        except ValueError:
-            print("ValueError: {0}".format(csvfile))
-
-    # concatenate them all together
-    data = pd.concat(dataframes, ignore_index=True)
-
+    try:
+        data = pd.read_csv(csvfile, dtype={'session_id': str, 'session_position': int, 'session_length': int, 'track_id_clean': str, 'skip_1': str, 'skip_2': str, 'skip_3': str, 'not_skipped': bool, 'context_switch': str, 'no_pause_before_play': str, 'short_pause_before_play': str,
+                    'long_pause_before_play': str, 'hist_user_behavior_n_seekfwd': str, 'hist_user_behavior_n_seekback': str, 'hist_user_behavior_is_shuffle': bool, 'hour_of_day': int, 'date': str, 'premium': bool, 'context_type': str, 'hist_user_behavior_reason_start': str, 'hist_user_behavior_reason_end': str})
+    except ValueError:
+        print("ValueError: {0}".format(csvfile))
 
     # Remove the metadata
     # Keep: hour of day, date, premium
@@ -164,26 +149,36 @@ def splitDataset():
     sessionData = pd.DataFrame()
     finalRowData = pd.DataFrame()
 
-    sessions = loadCompleteSessionContext()
+    # the path to your csv file directory
+    mycsvdir = '../new_data/training_set'
 
-    # Remove the last row of each session
-    # Put that last row into a separate structure
-    for session in sessions:
-        # Extract the final song in a session 
-        finalRow = session.tail(1)
-        
-        # TAKEN OUT AND THEN REMOVED FROM CONTEXT MATRIX
-        session.drop(index=session.index[-1],axis=0,inplace=True)
+    # get all the csv files in that directory (assuming they have the extension .csv)
+    csvfiles = glob.glob(os.path.join(mycsvdir, '*.csv'))
 
-        sessionData = pd.concat([sessionData, session])
-        finalRowData = pd.concat([finalRowData, finalRow])
+    for i, csvfile in enumerate(csvfiles):
 
+        sessions = loadCompleteSessionContext(csvfile)
 
+        # Remove the last row of each session
+        # Put that last row into a separate structure
+        for session in sessions:
+            # Extract the final song in a session 
+            finalRow = session.tail(1)
+            
+            # TAKEN OUT AND THEN REMOVED FROM CONTEXT MATRIX
+            session.drop(index=session.index[-1],axis=0,inplace=True)
 
-    print(sessionData)
-    # Spit it out to a csv
-    sessionData.to_csv('split_data/clean_sessions.csv', index=False)
-    finalRowData.to_csv('split_data/final_row.csv', index=False)
+            sessionData = pd.concat([sessionData, session])
+            finalRowData = pd.concat([finalRowData, finalRow])
+
+        print(sessionData)
+
+        sessionPath = "split_data/clean_sessions{0}.csv".format(i)
+        finalRowPath = "split_data/final_row{0}.csv".format(i)
+
+        # Spit it out to a csv
+        sessionData.to_csv(sessionPath, index=False)
+        finalRowData.to_csv(finalRowPath, index=False)
 
 
 
