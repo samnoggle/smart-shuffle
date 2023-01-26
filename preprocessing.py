@@ -18,7 +18,7 @@ def loadTracks():
     start = time.time()
 
     # Load in the track features dataset
-    tracks = pd.read_csv("raw_data/tf_mini.csv")
+    tracks = pd.read_csv("../track_features/tf_000000000000.csv")
 
     # Turn "mode" into int value
     tracks['mode'] = tracks['mode'].str.replace('major', '1')
