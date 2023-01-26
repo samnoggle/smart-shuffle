@@ -17,8 +17,12 @@ def loadTracks():
 
     start = time.time()
 
-    # Load in the track features dataset
-    tracks = pd.read_csv("../track_features/tf_000000000000.csv")
+    # Load in the 2 track features dataset
+    tracks1 = pd.read_csv("../track_features/tf_000000000000.csv")
+
+    tracks2 = pd.read_csv("../track_features/tf_000000000001.csv")
+
+    tracks = pd.concat([tracks1, tracks2])
 
     # Turn "mode" into int value
     tracks['mode'] = tracks['mode'].str.replace('major', '1')
@@ -105,7 +109,7 @@ def loadFinalTracks():
     """
 
     # Load the finalSong dataset
-    data = pd.read_csv("split_data/final_row0.csv")
+    data = pd.read_csv("../big_split_data/final_row0.csv")
 
     return data
 
@@ -118,7 +122,7 @@ def loadSession():
     sessions = []
     start = time.time()
 
-    data = pd.read_csv("split_data/clean_sessions0.csv")
+    data = pd.read_csv("../big_split_data/clean_sessions0.csv")
 
     entries = data['session_length'].iloc[0]
     entries -= 1 # its one less because the final song is missing here
