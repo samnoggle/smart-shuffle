@@ -177,8 +177,8 @@ def splitDataset():
 
     print(sessionData)
 
-    sessionPath = "split_data/clean_sessions2.csv"
-    finalRowPath = "split_data/final_row2.csv"
+    sessionPath = "../big_split_data/clean_sessions1.csv"
+    finalRowPath = "../big_split_data/final_row1.csv"
 
     # Spit it out to a csv
     sessionData.to_csv(sessionPath, index=False)
