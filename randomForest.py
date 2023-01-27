@@ -66,6 +66,8 @@ def create_tree():
     plt.title("Visualizing Important Features")
     plt.legend()
     plt.show()
+    plt.savefig('importantFeatures.png')
+
 
 
 def load_model():
