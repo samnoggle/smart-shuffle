@@ -157,32 +157,32 @@ def splitDataset():
     mycsvdir = '../new_data/training_set'
 
     # get all the csv files in that directory (assuming they have the extension .csv)
-    csvfiles = glob.glob(os.path.join(mycsvdir, '*.csv'))
+    # csvfiles = glob.glob(os.path.join(mycsvdir, '*.csv'))
 
-    for i, csvfile in enumerate(csvfiles):
+    # for i, csvfile in enumerate(csvfiles):
 
-        sessions = loadCompleteSessionContext(csvfile)
+    sessions = loadCompleteSessionContext('../new_data/training_set/log_0_20180716_000000000000.csv')
 
-        # Remove the last row of each session
-        # Put that last row into a separate structure
-        for session in sessions:
-            # Extract the final song in a session 
-            finalRow = session.tail(1)
-            
-            # TAKEN OUT AND THEN REMOVED FROM CONTEXT MATRIX
-            session.drop(index=session.index[-1],axis=0,inplace=True)
+    # Remove the last row of each session
+    # Put that last row into a separate structure
+    for session in sessions:
+        # Extract the final song in a session 
+        finalRow = session.tail(1)
+        
+        # TAKEN OUT AND THEN REMOVED FROM CONTEXT MATRIX
+        session.drop(index=session.index[-1],axis=0,inplace=True)
 
-            sessionData = pd.concat([sessionData, session])
-            finalRowData = pd.concat([finalRowData, finalRow])
+        sessionData = pd.concat([sessionData, session])
+        finalRowData = pd.concat([finalRowData, finalRow])
 
-        print(sessionData)
+    print(sessionData)
 
-        sessionPath = "split_data/clean_sessions{0}.csv".format(i)
-        finalRowPath = "split_data/final_row{0}.csv".format(i)
+    sessionPath = "split_data/clean_sessions2.csv"
+    finalRowPath = "split_data/final_row2.csv"
 
-        # Spit it out to a csv
-        sessionData.to_csv(sessionPath, index=False)
-        finalRowData.to_csv(finalRowPath, index=False)
+    # Spit it out to a csv
+    sessionData.to_csv(sessionPath, index=False)
+    finalRowData.to_csv(finalRowPath, index=False)
 
 
 
