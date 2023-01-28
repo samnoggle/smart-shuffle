@@ -17,7 +17,7 @@ def create_tree():
     """
 
     # load dataset
-    data = pd.read_csv("../../lastSongMetrics.csv", header=0)
+    data = pd.read_csv("../lastSongMetrics.csv", header=0)
 
 
     # split dataset into features and target variable(not_skipped)
