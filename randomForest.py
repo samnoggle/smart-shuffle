@@ -63,7 +63,7 @@ def create_tree():
     # Add labels to your graph
     plt.xlabel('Feature Importance Score')
     plt.ylabel('Features')
-    plt.title("Visualizing Important Features")
+    plt.title("Important Features: Track Features")
     plt.legend()
     plt.show()
     plt.tight_layout()
