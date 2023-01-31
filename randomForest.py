@@ -66,6 +66,7 @@ def create_tree():
     plt.title("Visualizing Important Features")
     plt.legend()
     plt.show()
+    plt.tight_layout()
     plt.savefig('importantFeatures_FeatsOnly.pdf')
 
 
