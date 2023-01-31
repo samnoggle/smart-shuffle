@@ -66,7 +66,7 @@ def create_tree():
     plt.title("Visualizing Important Features")
     plt.legend()
     plt.show()
-    plt.savefig('importantFeatures.png')
+    plt.savefig('importantFeatures_allData.pdf')
 
 
 
