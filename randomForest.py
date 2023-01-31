@@ -21,7 +21,7 @@ def create_tree():
 
 
     # split dataset into features and target variable(not_skipped)
-    X = data.loc[:, ~data.columns.isin(['not_skipped', 'session_id', 'prevSongPlayed', 'hour_of_day','day_of_week','month','premium','percent_skipped'])]
+    X = data.loc[:, ~data.columns.isin(['not_skipped', 'session_id', 'prevSongPlayed', 'hour_of_day','day_of_week','month','premium','percent_skipped', 'euclidLastPlay','euclidLastSkip','manLastPlay','manLastSkip','eucAvPlay','eucAvSkip','angleAvPlay','angleAvSkip'])]
     y = data.not_skipped
 
     # Think I need to do encoding on the data for categorical string features...
@@ -66,7 +66,7 @@ def create_tree():
     plt.title("Visualizing Important Features")
     plt.legend()
     plt.show()
-    plt.savefig('importantFeatures_FeatsMetrics.pdf')
+    plt.savefig('importantFeatures_FeatsOnly.pdf')
 
 
 
