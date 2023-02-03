@@ -21,7 +21,7 @@ def create_tree():
 
 
     # split dataset into features and target variable(not_skipped)
-    X = data.loc[:, ~data.columns.isin(['not_skipped', 'session_id'])]
+    X = data.loc[:, ~data.columns.isin(['not_skipped', 'session_id', 'prevSongPlayed', 'hour_of_day','day_of_week','month','premium','percent_skipped',])]
     y = data.not_skipped
 
     # Think I need to do encoding on the data for categorical string features...
@@ -55,7 +55,7 @@ def create_tree():
     #Visualize important features
     feature_imp = pd.Series(rf_tree.feature_importances_,index=X.columns).sort_values(ascending=False)
 
-    print(feature_imp[:10])
+    print(feature_imp)
     feature_imp = feature_imp[:10]
 
     import matplotlib.pyplot as plt
@@ -66,11 +66,11 @@ def create_tree():
     # Add labels to your graph
     plt.xlabel('Feature Importance Score')
     plt.ylabel('Features')
-    plt.title("Important Features: Track Features, Metrics & Metadata")
+    plt.title("Important Features: Track Features & Metrics")
     plt.legend()
     plt.show()
     plt.tight_layout()
-    plt.savefig('importantFeatures_FeatsMetricsMeta.pdf')
+    plt.savefig('importantFeatures_FeatsMetrics.pdf')
 
 
 
