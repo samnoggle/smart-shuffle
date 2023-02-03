@@ -21,7 +21,7 @@ def create_tree():
 
 
     # split dataset into features and target variable(not_skipped)
-    X = data.loc[:, ~data.columns.isin(['not_skipped', 'session_id', 'prevSongPlayed', 'percent_skipped', 'euclidLastPlay','euclidLastSkip','manLastPlay','manLastSkip','eucAvPlay','eucAvSkip','angleAvPlay','angleAvSkip','prevSongPlayed','neighborSkipped'])]
+    X = data.loc[:, ~data.columns.isin(['not_skipped', 'session_id', 'prevSongPlayed', 'percent_skipped', 'euclidLastPlay','euclidLastSkip','manLastPlay','manLastSkip','eucAvPlay','eucAvSkip','angleAvPlay','angleAvSkip','prevSongPlayed','neighborSkipped', 'duration','release_year','us_popularity_estimate','acousticness','beat_strength','bounciness','danceability','dyn_range_mean','energy','flatness','instrumentalness','key','liveness','loudness','mechanism','mode','organism','speechiness','tempo','time_signature','valence','acoustic_vector_0','acoustic_vector_1','acoustic_vector_2','acoustic_vector_3','acoustic_vector_4','acoustic_vector_5','acoustic_vector_6','acoustic_vector_7'])]
     y = data.not_skipped
 
     # Think I need to do encoding on the data for categorical string features...
@@ -66,11 +66,11 @@ def create_tree():
     # Add labels to your graph
     plt.xlabel('Feature Importance Score')
     plt.ylabel('Features')
-    plt.title("Important Features: Track Features & Metadata from Spotify")
+    plt.title("Important Features: Spotify Metadata)
     plt.legend()
     plt.show()
     plt.tight_layout()
-    plt.savefig('importantFeatures_SpotifyData.pdf')
+    plt.savefig('importantFeatures_SpotifyMetaData.pdf')
 
 
 
