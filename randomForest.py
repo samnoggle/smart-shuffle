@@ -66,7 +66,7 @@ def create_tree():
     # Add labels to your graph
     plt.xlabel('Feature Importance Score')
     plt.ylabel('Features')
-    plt.title("Important Features: Spotify Metadata)
+    plt.title("Important Features: Spotify Metadata")
     plt.legend()
     plt.show()
     plt.tight_layout()
