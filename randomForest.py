@@ -55,8 +55,8 @@ def create_tree():
     #Visualize important features
     feature_imp = pd.Series(rf_tree.feature_importances_,index=X.columns).sort_values(ascending=False)
 
-    print(feature_imp[:11])
-    feature_imp = feature_imp[:11]
+    print(feature_imp[:10])
+    feature_imp = feature_imp[:10]
 
     import matplotlib.pyplot as plt
     import seaborn as sns
