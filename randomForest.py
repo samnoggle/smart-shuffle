@@ -21,7 +21,7 @@ def create_tree():
 
 
     # split dataset into features and target variable(not_skipped)
-    X = data.loc[:, ~data.columns.isin(['not_skipped', 'session_id', 'euclidLastPlay','euclidLastSkip','manLastPlay','manLastSkip','eucAvPlay','eucAvSkip','angleAvPlay','angleAvSkip','prevSongPlayed','neighborSkipped', 'duration','release_year','us_popularity_estimate','acousticness','beat_strength','bounciness','danceability','dyn_range_mean','energy','flatness','instrumentalness','key','liveness','loudness','mechanism','mode','organism','speechiness','tempo','time_signature','valence','acoustic_vector_0','acoustic_vector_1','acoustic_vector_2','acoustic_vector_3','acoustic_vector_4','acoustic_vector_5','acoustic_vector_6','acoustic_vector_7', 'hour_of_day','day_of_week','month','premium'])]
+    X = data.loc[:, ~data.columns.isin(['not_skipped', 'session_id', 'euclidLastPlay','euclidLastSkip','manLastPlay','manLastSkip','eucAvPlay','eucAvSkip','angleAvPlay','angleAvSkip','neighborSkipped', 'duration','release_year','us_popularity_estimate','acousticness','beat_strength','bounciness','danceability','dyn_range_mean','energy','flatness','instrumentalness','key','liveness','loudness','mechanism','mode','organism','speechiness','tempo','time_signature','valence','acoustic_vector_0','acoustic_vector_1','acoustic_vector_2','acoustic_vector_3','acoustic_vector_4','acoustic_vector_5','acoustic_vector_6','acoustic_vector_7', 'hour_of_day','day_of_week','month','premium'])]
     y = data.not_skipped
 
     # Think I need to do encoding on the data for categorical string features...
