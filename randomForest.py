@@ -19,14 +19,18 @@ def create_tree():
     # load dataset
     data = pd.read_csv("../lastSongMetrics.csv", header=0)
 
+    # All Data
+    X = data.loc[:, ~data.columns.isin(['not_skipped', 'session_id','eucAvPlay','eucAvSkip', 'euclidLastPlay','euclidLastSkip', 'angleAvPlay','angleAvSkip'])]
+
+    # Our Data
+    # X = data.loc[:, ~data.columns.isin(['not_skipped', 'session_id', 'duration','release_year','us_popularity_estimate','acousticness','beat_strength','bounciness','danceability','dyn_range_mean','energy','flatness','instrumentalness','key','liveness','loudness','mechanism','mode','organism','speechiness','tempo','time_signature','valence','acoustic_vector_0','acoustic_vector_1','acoustic_vector_2','acoustic_vector_3','acoustic_vector_4','acoustic_vector_5','acoustic_vector_6','acoustic_vector_7', 'hour_of_day','day_of_week','month','premium'])]
+
+    #Metrics
+    # X = data.loc[:, ~data.columns.isin(['not_skipped', 'session_id', 'prevSongPlayed', 'percent_skipped', 'duration','release_year','us_popularity_estimate','acousticness','beat_strength','bounciness','danceability','dyn_range_mean','energy','flatness','instrumentalness','key','liveness','loudness','mechanism','mode','organism','speechiness','tempo','time_signature','valence','acoustic_vector_0','acoustic_vector_1','acoustic_vector_2','acoustic_vector_3','acoustic_vector_4','acoustic_vector_5','acoustic_vector_6','acoustic_vector_7', 'hour_of_day','day_of_week','month','premium'])]
+
 
     # split dataset into features and target variable(not_skipped)
-    X = data.loc[:, ~data.columns.isin(['not_skipped', 'session_id', 'prevSongPlayed', 'percent_skipped', 'manLastPlay','manLastSkip', 'angleAvPlay','angleAvSkip', 'duration','release_year','us_popularity_estimate','acousticness','beat_strength','bounciness','danceability','dyn_range_mean','energy','flatness','instrumentalness','key','liveness','loudness','mechanism','mode','organism','speechiness','tempo','time_signature','valence','acoustic_vector_0','acoustic_vector_1','acoustic_vector_2','acoustic_vector_3','acoustic_vector_4','acoustic_vector_5','acoustic_vector_6','acoustic_vector_7', 'hour_of_day','day_of_week','month','premium'])]
     y = data.not_skipped
-
-    # Think I need to do encoding on the data for categorical string features...
-    # DEPRECIATED BECUASE NO LONGER USING THIS DATA
-    # X = pd.get_dummies(X, columns=['context_type', 'hist_user_behavior_reason_start'])
     
     print(X.to_string(max_rows=10))
   
@@ -67,11 +71,11 @@ def create_tree():
     # Add labels to your graph
     plt.xlabel('Feature Importance Score')
     plt.ylabel('Features')
-    plt.title("Important Features: Metrics except Manhattan & Angle Between")
+    plt.title("Important Features: All Data except Euclidean & Angle Between")
     plt.legend()
     plt.show()
     plt.tight_layout()
-    plt.savefig('importantFeatures_Metrics_NoManAng.pdf')
+    plt.savefig('importantFeatures_AllData_NoEucAng.pdf')
 
 
 
