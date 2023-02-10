@@ -20,10 +20,10 @@ def create_tree():
     data = pd.read_csv("../lastSongMetrics.csv", header=0)
 
     # All Data
-    X = data.loc[:, ~data.columns.isin(['not_skipped', 'session_id','eucAvPlay','eucAvSkip', 'euclidLastPlay','euclidLastSkip', 'angleAvPlay','angleAvSkip'])]
+    # X = data.loc[:, ~data.columns.isin(['not_skipped', 'session_id'])]
 
     # Our Data
-    # X = data.loc[:, ~data.columns.isin(['not_skipped', 'session_id', 'duration','release_year','us_popularity_estimate','acousticness','beat_strength','bounciness','danceability','dyn_range_mean','energy','flatness','instrumentalness','key','liveness','loudness','mechanism','mode','organism','speechiness','tempo','time_signature','valence','acoustic_vector_0','acoustic_vector_1','acoustic_vector_2','acoustic_vector_3','acoustic_vector_4','acoustic_vector_5','acoustic_vector_6','acoustic_vector_7', 'hour_of_day','day_of_week','month','premium'])]
+    X = data.loc[:, ~data.columns.isin(['not_skipped', 'session_id', 'eucAvPlay','eucAvSkip', 'euclidLastPlay','euclidLastSkip', 'angleAvPlay','angleAvSkip', 'duration','release_year','us_popularity_estimate','acousticness','beat_strength','bounciness','danceability','dyn_range_mean','energy','flatness','instrumentalness','key','liveness','loudness','mechanism','mode','organism','speechiness','tempo','time_signature','valence','acoustic_vector_0','acoustic_vector_1','acoustic_vector_2','acoustic_vector_3','acoustic_vector_4','acoustic_vector_5','acoustic_vector_6','acoustic_vector_7', 'hour_of_day','day_of_week','month','premium'])]
 
     #Metrics
     # X = data.loc[:, ~data.columns.isin(['not_skipped', 'session_id', 'prevSongPlayed', 'percent_skipped', 'duration','release_year','us_popularity_estimate','acousticness','beat_strength','bounciness','danceability','dyn_range_mean','energy','flatness','instrumentalness','key','liveness','loudness','mechanism','mode','organism','speechiness','tempo','time_signature','valence','acoustic_vector_0','acoustic_vector_1','acoustic_vector_2','acoustic_vector_3','acoustic_vector_4','acoustic_vector_5','acoustic_vector_6','acoustic_vector_7', 'hour_of_day','day_of_week','month','premium'])]
@@ -71,11 +71,11 @@ def create_tree():
     # Add labels to your graph
     plt.xlabel('Feature Importance Score')
     plt.ylabel('Features')
-    plt.title("Important Features: All Data except Euclidean & Angle Between")
+    plt.title("Important Features: Our Data except Euclidean & Angle Between")
     plt.legend()
     plt.show()
     plt.tight_layout()
-    plt.savefig('importantFeatures_AllData_NoEucAng.pdf')
+    plt.savefig('importantFeatures_OurData_NoEucAng.pdf')
 
 
 
