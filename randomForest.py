@@ -21,7 +21,7 @@ def create_tree():
 
 
     # split dataset into features and target variable(not_skipped)
-    X = data.loc[:, ~data.columns.isin(['not_skipped', 'session_id'])]
+    X = data.loc[:, ~data.columns.isin(['not_skipped', 'session_id', 'manLastPlay','manLastSkip', 'angleAvPlay','angleAvSkip'])]
     y = data.not_skipped
 
     # Think I need to do encoding on the data for categorical string features...
@@ -67,11 +67,11 @@ def create_tree():
     # Add labels to your graph
     plt.xlabel('Feature Importance Score')
     plt.ylabel('Features')
-    plt.title("Important Features: All Data")
+    plt.title("Important Features: All Data except Manhattan & Angle Between")
     plt.legend()
     plt.show()
     plt.tight_layout()
-    plt.savefig('importantFeatures_AllData.pdf')
+    plt.savefig('importantFeatures_AllData_NoManAng.pdf')
 
 
 
