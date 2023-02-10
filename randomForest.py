@@ -56,8 +56,8 @@ def create_tree():
     feature_imp = pd.Series(rf_tree.feature_importances_,index=X.columns).sort_values(ascending=False)
 
     print(feature_imp)
-    
-    feature_imp = feature_imp[:10]
+
+    # feature_imp = feature_imp[:10]
 
     import matplotlib.pyplot as plt
     import seaborn as sns
@@ -67,11 +67,11 @@ def create_tree():
     # Add labels to your graph
     plt.xlabel('Feature Importance Score')
     plt.ylabel('Features')
-    plt.title("Important Features: Contextual Features")
+    plt.title("Important Features: All Data")
     plt.legend()
     plt.show()
-    # plt.tight_layout()
-    # plt.savefig('importantFeatures_Contextual.pdf')
+    plt.tight_layout()
+    plt.savefig('importantFeatures_AllData.pdf')
 
 
 
