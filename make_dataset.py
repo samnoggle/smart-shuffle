@@ -46,11 +46,15 @@ for i, session in enumerate(sessions):
         avSkipped = m.averageTracks(current.skipped)
         eucAvSkip = m.euclidian(current.finalSong, avSkipped)
         angleAvSkip = m.angle_between(current.finalSong, avSkipped)
+        manAvSkip = m.manhattan(current.finalSong, avSkipped)
+        angleLastSkip = m.angle_between(current.finalSong, current.skipped[-1])
     else:
         euclidLastSkip = -1
         manLastSkip = -1
         eucAvSkip = -1
         angleAvSkip = -1
+        manAvSkip = -1
+        angleLastSkip = -1
 
     if current.nonSkipped:
         euclidLastPlay = m.euclidian(current.finalSong, current.nonSkipped[-1])
@@ -58,11 +62,16 @@ for i, session in enumerate(sessions):
         avPlayed = m.averageTracks(current.nonSkipped)
         eucAvPlay = m.euclidian(current.finalSong, avPlayed)
         angleAvPlay = m.angle_between(current.finalSong, avPlayed)
+        manAvPlay = m.manhattan(current.finalSong, avPlayed)
+        angleLastPlay = m.angle_between(current.finalSong, current.nonSkipped[-1])
+
     else:
         euclidLastPlay = -1
         manLastPlay = -1
         eucAvPlay = -1
         angleAvPlay = -1
+        manAvPlay = -1
+        angleLastPlay = -1
 
     prevSongPlayed = current.contextMatrix.iloc[-2]['not_skipped']
 
@@ -75,17 +84,29 @@ for i, session in enumerate(sessions):
     # 1 euclidian from last skipped
     metrics['euclidLastSkip'] = euclidLastSkip
 
-    # 2 manhattan from last played
-    metrics['manLastPlay'] = manLastPlay
-
-    # 3 manhattan from last skipped
-    metrics['manLastSkip'] = manLastSkip
-
-    # 4 euclidian from averaged played vector
+    # 2 euclidian from averaged played vector
     metrics['eucAvPlay'] = eucAvPlay
 
-    # 5 euclidian from averaged skipped vector
+    # 3 euclidian from averaged skipped vector
     metrics['eucAvSkip'] = eucAvSkip
+
+    # 4 manhattan from last played
+    metrics['manLastPlay'] = manLastPlay
+
+    # 5 manhattan from last skipped
+    metrics['manLastSkip'] = manLastSkip
+
+    # 6 manhattan from average skipped vector
+    metrics['manAvSkip'] = manAvSkip
+
+    # 7 manhattan from average played vector
+    metrics['manAvPlay'] = manAvPlay
+
+    #  angle with last played
+    metrics['angleLastPlay'] = angleLastPlay
+
+    # andle with last skipped
+    metrics['angleLastSkip'] = angleLastSkip
 
     # 6 angle with averaged played vector
     metrics['angleAvPlay'] = angleAvPlay
@@ -138,7 +159,7 @@ for i, session in enumerate(sessions):
 newData = pd.DataFrame.from_records(listData)
 
 # Spit it out to a csv
-newData.to_csv('training_data/lastSongMetrics.csv', index=False)
+newData.to_csv('training_data/lastSongMetricsBig.csv', index=False)
 
 # Time taken
 end = time.time()
