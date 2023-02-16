@@ -17,16 +17,15 @@ def create_tree():
     """
 
     # load dataset
-    data = pd.read_csv("../lastSongMetrics.csv", header=0)
+    data = pd.read_csv("../lastSongMetricsBig.csv", header=0)
 
     # All Data
-    # X = data.loc[:, ~data.columns.isin(['not_skipped', 'session_id'])]
+    # X = data.loc[:, ~data.columns.isin(['not_skipped', 'session_id', 'angleAvPlay', 'angleAvSkip', 'angleLastPlay', 'angleLastSkip', 'eucAvPlay', 'eucAvSkip', 'euclidLastPlay', 'euclidLastSkip'])]
 
     # Our Data
-    # X = data.loc[:, ~data.columns.isin(['not_skipped', 'session_id', 'eucAvPlay','eucAvSkip', 'euclidLastPlay','euclidLastSkip', 'angleAvPlay','angleAvSkip', 'duration','release_year','us_popularity_estimate','acousticness','beat_strength','bounciness','danceability','dyn_range_mean','energy','flatness','instrumentalness','key','liveness','loudness','mechanism','mode','organism','speechiness','tempo','time_signature','valence','acoustic_vector_0','acoustic_vector_1','acoustic_vector_2','acoustic_vector_3','acoustic_vector_4','acoustic_vector_5','acoustic_vector_6','acoustic_vector_7', 'hour_of_day','day_of_week','month','premium'])]
+    X = data.loc[:, ~data.columns.isin(['not_skipped', 'session_id', 'percent_skipped', 'prevSongPlayed', 'month', 'premium', 'hour_of_day', 'day_of_week', 'duration','release_year','us_popularity_estimate','acousticness','beat_strength','bounciness','danceability','dyn_range_mean','energy','flatness','instrumentalness','key','liveness','loudness','mechanism','mode','organism','speechiness','tempo','time_signature','valence','acoustic_vector_0','acoustic_vector_1','acoustic_vector_2','acoustic_vector_3','acoustic_vector_4','acoustic_vector_5','acoustic_vector_6','acoustic_vector_7', 'hour_of_day','day_of_week','month','premium'])]
 
-    #Metrics
-    X = data.loc[:, ~data.columns.isin(['not_skipped', 'session_id', 'eucAvPlay','eucAvSkip', 'euclidLastPlay','euclidLastSkip', 'angleAvPlay','angleAvSkip', 'prevSongPlayed', 'percent_skipped', 'duration','release_year','us_popularity_estimate','acousticness','beat_strength','bounciness','danceability','dyn_range_mean','energy','flatness','instrumentalness','key','liveness','loudness','mechanism','mode','organism','speechiness','tempo','time_signature','valence','acoustic_vector_0','acoustic_vector_1','acoustic_vector_2','acoustic_vector_3','acoustic_vector_4','acoustic_vector_5','acoustic_vector_6','acoustic_vector_7', 'hour_of_day','day_of_week','month','premium'])]
+   # X = data.loc[:, ~data.columns.isin(['not_skipped', 'session_id', 'angleAvPlay', 'angleAvSkip', 'angleLastPlay', 'angleLastSkip', 'euclidLastPlay', 'euclidLastSkip', 'eucAvSkip', 'eucAvPlay', 'duration','release_year','us_popularity_estimate','acousticness','beat_strength','bounciness','danceability','dyn_range_mean','energy','flatness','instrumentalness','key','liveness','loudness','mechanism','mode','organism','speechiness','tempo','time_signature','valence','acoustic_vector_0','acoustic_vector_1','acoustic_vector_2','acoustic_vector_3','acoustic_vector_4','acoustic_vector_5','acoustic_vector_6','acoustic_vector_7'])]
 
 
     # split dataset into features and target variable(not_skipped)
@@ -55,13 +54,16 @@ def create_tree():
     print('Training Accuracy : ', metrics.accuracy_score(y_train, rf_tree.predict(X_train))*100) # accuracy on train set
     print('Validation Accuracy : ', metrics.accuracy_score(y_test, rf_tree.predict(X_test))*100) # accuracy on test set
 
+    # Generate confusion matrix
+    y_pred_test = rf_tree.predict(X_test)
+    confusion_matrix(y_test, y_pred_test)
 
     #Visualize important features
     feature_imp = pd.Series(rf_tree.feature_importances_,index=X.columns).sort_values(ascending=False)
 
     print(feature_imp)
 
-    # feature_imp = feature_imp[:10]
+    feature_imp = feature_imp[:10]
 
     import matplotlib.pyplot as plt
     import seaborn as sns
@@ -71,11 +73,11 @@ def create_tree():
     # Add labels to your graph
     plt.xlabel('Feature Importance Score')
     plt.ylabel('Features')
-    plt.title("Important Features: Metrics except Euclidean & Angle Between")
+    plt.title("Important Features: All Metrics")
     plt.legend()
     plt.show()
     plt.tight_layout()
-    plt.savefig('importantFeatures_Metrics_NoEucAng.pdf')
+    plt.savefig('../../home/students/sjnoggle/newGraphs/impFeats_AllMetrics.pdf')
 
 
 
