@@ -65,9 +65,9 @@ def create_tree():
     # Get and reshape confusion matrix data
     labels = ['True', 'False']
     matrix = confusion_matrix(y_test, y_pred_test, labels=labels)
-    print(matrix)
-
     matrix = matrix.astype('float') / matrix.sum(axis=1)[:, np.newaxis]
+
+    print(matrix)
 
     # Build the plot
     plt.figure(figsize=(16,2))
