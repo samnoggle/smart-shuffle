@@ -27,7 +27,7 @@ def create_tree():
     # X = data.loc[:, ~data.columns.isin(['not_skipped', 'session_id', 'angleAvPlay', 'angleAvSkip', 'angleLastPlay', 'angleLastSkip', 'eucAvPlay', 'eucAvSkip', 'euclidLastPlay', 'euclidLastSkip'])]
 
     # Our Data
-    X = data.loc[:, ~data.columns.isin(['not_skipped', 'session_id', 'percent_skipped', 'prevSongPlayed', 'angleAvPlay', 'angleAvPlay', 'angleAvSkip', 'angleLastPlay', 'angleLastSkip', 'eucAvPlay', 'eucAvSkip', 'euclidLastPlay', 'euclidLastSkip', 'duration','release_year','us_popularity_estimate','acousticness','beat_strength','bounciness','danceability','dyn_range_mean','energy','flatness','instrumentalness','key','liveness','loudness','mechanism','mode','organism','speechiness','tempo','time_signature','valence','acoustic_vector_0','acoustic_vector_1','acoustic_vector_2','acoustic_vector_3','acoustic_vector_4','acoustic_vector_5','acoustic_vector_6','acoustic_vector_7', 'hour_of_day','day_of_week','month','premium'])]
+    X = data.loc[:, ~data.columns.isin(['not_skipped', 'session_id', 'angleAvPlay', 'angleAvPlay', 'angleAvSkip', 'angleLastPlay', 'angleLastSkip', 'eucAvPlay', 'eucAvSkip', 'euclidLastPlay', 'euclidLastSkip', 'duration','release_year','us_popularity_estimate','acousticness','beat_strength','bounciness','danceability','dyn_range_mean','energy','flatness','instrumentalness','key','liveness','loudness','mechanism','mode','organism','speechiness','tempo','time_signature','valence','acoustic_vector_0','acoustic_vector_1','acoustic_vector_2','acoustic_vector_3','acoustic_vector_4','acoustic_vector_5','acoustic_vector_6','acoustic_vector_7'])]
 
    # X = data.loc[:, ~data.columns.isin(['not_skipped', 'session_id', 'angleAvPlay', 'angleAvSkip', 'angleLastPlay', 'angleLastSkip', 'euclidLastPlay', 'euclidLastSkip', 'eucAvSkip', 'eucAvPlay', 'duration','release_year','us_popularity_estimate','acousticness','beat_strength','bounciness','danceability','dyn_range_mean','energy','flatness','instrumentalness','key','liveness','loudness','mechanism','mode','organism','speechiness','tempo','time_signature','valence','acoustic_vector_0','acoustic_vector_1','acoustic_vector_2','acoustic_vector_3','acoustic_vector_4','acoustic_vector_5','acoustic_vector_6','acoustic_vector_7'])]
 
@@ -84,7 +84,7 @@ def create_tree():
     plt.xlabel('Predicted label')
     plt.ylabel('True label')
     plt.title('Confusion Matrix for Random Forest Model')
-    plt.savefig('../../home/students/sjnoggle/confusionMatrix_Metrics.pdf')
+    plt.savefig('../../home/students/sjnoggle/confusionMatrix_AllData.pdf')
 
     #Visualize important features
     feature_imp = pd.Series(rf_tree.feature_importances_,index=X.columns).sort_values(ascending=False)
