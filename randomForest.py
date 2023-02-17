@@ -59,15 +59,14 @@ def create_tree():
     print('Training Accuracy : ', metrics.accuracy_score(y_train, rf_tree.predict(X_train))*100) # accuracy on train set
     print('Validation Accuracy : ', metrics.accuracy_score(y_test, y_pred_test)*100) # accuracy on test set
 
-    # Generate confusion matrix
-    matrix = confusion_matrix(y_test, y_pred_test)
 
     print(y_test)
 
     # Get and reshape confusion matrix data
     labels = ['True', 'False']
-    print(matrix)
     matrix = confusion_matrix(y_test, y_pred_test, labels=labels)
+    print(matrix)
+
     matrix = matrix.astype('float') / matrix.sum(axis=1)[:, np.newaxis]
 
     # Build the plot
