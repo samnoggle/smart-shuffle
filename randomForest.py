@@ -62,18 +62,21 @@ def create_tree():
     # Generate confusion matrix
     matrix = confusion_matrix(y_test, y_pred_test)
 
+    print(y_test)
+
     # Get and reshape confusion matrix data
-    matrix = confusion_matrix(y_test, y_pred_test)
+    labels = ['True', 'False']
+    matrix = confusion_matrix(y_test, y_pred_test, labels=labels)
     matrix = matrix.astype('float') / matrix.sum(axis=1)[:, np.newaxis]
 
     # Build the plot
-    plt.figure(figsize=(16,7))
+    plt.figure(figsize=(16,2))
     sns.set(font_scale=1.4)
     sns.heatmap(matrix, annot=True, annot_kws={'size':10},
                 cmap=plt.cm.Greens, linewidths=0.2)
 
     # Add labels to the plot
-    class_names = ['prevSongPlayed', 'percent_skipped', 'manLastSkip', 'manLastPlay', 'neighborSkipped', 'manAvPlay', 'manAvSkip',]
+    class_names = ["Played", "Skipped"]
     tick_marks = np.arange(len(class_names))
     tick_marks2 = tick_marks + 0.5
     plt.xticks(tick_marks, class_names, rotation=25)
