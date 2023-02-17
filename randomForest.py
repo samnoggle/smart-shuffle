@@ -73,9 +73,7 @@ def create_tree():
                 cmap=plt.cm.Greens, linewidths=0.2)
 
     # Add labels to the plot
-    class_names = ['Spruce/Fir', 'Lodgepole Pine', 'Ponderosa Pine', 
-                'Cottonwood/Willow', 'Aspen', 'Douglas-fir',    
-                'Krummholz']
+    class_names = ['prevSongPlayed', 'percent_skipped', 'manLastSkip', 'manLastPlay', 'neighborSkipped', 'manAvPlay', 'manAvSkip',]
     tick_marks = np.arange(len(class_names))
     tick_marks2 = tick_marks + 0.5
     plt.xticks(tick_marks, class_names, rotation=25)
