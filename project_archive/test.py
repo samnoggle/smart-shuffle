@@ -30,6 +30,6 @@ sp = spotipy.Spotify(auth_manager=SpotifyOAuth(scope=scope))
 # make a class object? No. pass that sp object to each one!
 
 
-songURI = "spotify:track:2b550f006c4144f7aa21d7dbd06ce409"
+songURI = "spotify:track:1Ist6PR2BZR3n2z2Y5R6S1"
 print(sp.audio_features(songURI)[0])
 

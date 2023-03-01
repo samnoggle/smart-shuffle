@@ -78,17 +78,17 @@ for i, session in enumerate(sessions):
     neighborSkipped = m.is_neighbor_skipped(
         current.finalSong, current.skipped, current.nonSkipped)
 
-    # 0 euclidian from last played
-    metrics['euclidLastPlay'] = euclidLastPlay
+    # # 0 euclidian from last played
+    # metrics['euclidLastPlay'] = euclidLastPlay
 
-    # 1 euclidian from last skipped
-    metrics['euclidLastSkip'] = euclidLastSkip
+    # # 1 euclidian from last skipped
+    # metrics['euclidLastSkip'] = euclidLastSkip
 
-    # 2 euclidian from averaged played vector
-    metrics['eucAvPlay'] = eucAvPlay
+    # # 2 euclidian from averaged played vector
+    # metrics['eucAvPlay'] = eucAvPlay
 
-    # 3 euclidian from averaged skipped vector
-    metrics['eucAvSkip'] = eucAvSkip
+    # # 3 euclidian from averaged skipped vector
+    # metrics['eucAvSkip'] = eucAvSkip
 
     # 4 manhattan from last played
     metrics['manLastPlay'] = manLastPlay
@@ -102,23 +102,26 @@ for i, session in enumerate(sessions):
     # 7 manhattan from average played vector
     metrics['manAvPlay'] = manAvPlay
 
-    #  angle with last played
-    metrics['angleLastPlay'] = angleLastPlay
+    # #  angle with last played
+    # metrics['angleLastPlay'] = angleLastPlay
 
-    # andle with last skipped
-    metrics['angleLastSkip'] = angleLastSkip
+    # # angle with last skipped
+    # metrics['angleLastSkip'] = angleLastSkip
 
-    # 6 angle with averaged played vector
-    metrics['angleAvPlay'] = angleAvPlay
+    # # angle with averaged played vector
+    # metrics['angleAvPlay'] = angleAvPlay
 
-    # 7 angle with averaged skipped vector
-    metrics['angleAvSkip'] = angleAvSkip
+    # # angle with averaged skipped vector
+    # metrics['angleAvSkip'] = angleAvSkip
 
-    # 8 is the prev song skipped?
+    # is the prev song skipped?
     metrics['prevSongPlayed'] = prevSongPlayed
 
-    # 9 is the nearest neighbor skipped?
+    # is the nearest neighbor skipped?
     metrics['neighborSkipped'] = neighborSkipped
+
+    # Tack on if the mini forest thinks it's a skip
+    metrics['miniForestDecision'] = current.miniForestDecision()
 
     # Grab the Metadata for the dataset
     percentSkipped = (len(current.skipped) / len(current.userTracks)) * 100
@@ -159,7 +162,7 @@ for i, session in enumerate(sessions):
 newData = pd.DataFrame.from_records(listData)
 
 # Spit it out to a csv
-newData.to_csv('training_data/lastSongMetricsBig.csv', index=False)
+newData.to_csv('training_data/lastSongMetricsMiniTree.csv', index=False)
 
 # Time taken
 end = time.time()

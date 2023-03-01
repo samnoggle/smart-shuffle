@@ -3,6 +3,8 @@
 """
 import pandas as pd
 import datetime
+from sklearn.ensemble import RandomForestClassifier
+
 
 # public track index where all track features
 # are loaded into
@@ -73,6 +75,38 @@ class Session:
             else:
                 self.skipped.append(trackFeats)
         sessionLengths.append(len(self.userTracks))
+
+    def miniForestDecision(self):
+        """
+        Trains a random forest for one session 
+        """
+        # training data is the tracks (except final one)
+        data = self.contextMatrix
+
+        lastRow = self.finalRow
+
+        # Use everything cept that session id and the not_skipped variable
+        X = data.loc[:, ~data.columns.isin(['not_skipped', 'session_id'])]
+
+        y = data.not_skipped
+
+        # ignoring the usual train - test splitting step bc its all going to be used for training
+
+        # Create Decision Tree classifer object
+        rf_tree = RandomForestClassifier(max_depth=5, random_state=0)
+
+        mini_tree = mini_tree.fit(X, y)
+
+        # Ask it to make one prediction on the final row
+
+        lastRow_X =  lastRow.loc[:, ~data.columns.isin(['not_skipped', 'session_id'])]
+        lastRow_y = lastRow.not_skipped # keep the answer just in case, idk
+
+        prediction = mini_tree.predict(lastRow_X)
+
+        return prediction
+
+
 
     def getDayOfWeek(self):
         date = datetime.datetime.strptime(self.date, "%Y-%m-%d").date()
