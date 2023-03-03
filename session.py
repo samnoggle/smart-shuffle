@@ -96,7 +96,7 @@ class Session:
         # ignoring the usual train - test splitting step bc its all going to be used for training
 
         # Create Decision Tree classifer object
-        rf_tree = RandomForestClassifier(max_depth=5, random_state=0)
+        mini_tree = RandomForestClassifier(max_depth=5, random_state=0)
 
         mini_tree = mini_tree.fit(X, y)
 
