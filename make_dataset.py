@@ -170,6 +170,10 @@ t = end - start
 print("Calculating metrics for {0} sessions took {1} seconds".format(
     len(sessions), t))
 
+# Feature importance of mini forests
+mean_importances = s.running_importances / len(sessions)
+
+
 # Average track length
 avTrackLength = sum(s.sessionLengths)/len(s.sessionLengths)
 print("Each session on average was {0} tracks long".format(avTrackLength))

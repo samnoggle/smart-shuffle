@@ -2,6 +2,7 @@
     Class to store a session's data
 """
 import pandas as pd
+import numpy as np
 import datetime
 from sklearn.ensemble import RandomForestClassifier
 
@@ -16,6 +17,8 @@ sessionLengths = []
 
 trackData = pd.DataFrame()
 
+# Keeping track of the mini forest feature scores
+running_importances = np.zeros(29)
 
 class Session:
     def __init__(self, _contextMatrix, _finalRow):
@@ -103,6 +106,9 @@ class Session:
         lastRow_y = lastRow.not_skipped # keep the answer just in case, idk
 
         prediction = mini_tree.predict(lastRow_X)
+
+        # Add to the aggregates
+        running_importances += mini_tree.feature_importances_
 
         return prediction
 
