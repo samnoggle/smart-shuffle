@@ -89,7 +89,7 @@ class Session:
         lastRow = self.finalRow
 
         # Use everything cept that session id and the not_skipped variable
-        X = data.loc[:, ~data.columns.isin(['not_skipped', 'session_id'])]
+        X = data.loc[:, ~data.columns.isin(['not_skipped', 'session_id', 'track_id'])]
 
         y = data.not_skipped
 
