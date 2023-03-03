@@ -174,6 +174,9 @@ print("Calculating metrics for {0} sessions took {1} seconds".format(
 mean_importances = s.running_importances / len(sessions)
 
 
+print(mean_importances)
+
+
 # Average track length
 avTrackLength = sum(s.sessionLengths)/len(s.sessionLengths)
 print("Each session on average was {0} tracks long".format(avTrackLength))
