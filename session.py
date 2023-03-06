@@ -110,7 +110,6 @@ class Session:
 
         # Turn list back into dataframe
         data = pd.DataFrame.from_records(listData)
-        print(data)
 
         # Still need to do the final row but thats ok...
 
@@ -127,13 +126,10 @@ class Session:
         dictData = context | features[0]
 
         lastRowData = pd.DataFrame.from_records(dictData, index=[0])
-        print(lastRowData)
 
 
         # Use everything cept that session id and the not_skipped variable
         X = data.loc[:, ~data.columns.isin(['date', 'session_position','session_length','track_id_clean','not_skipped', 'session_id', 'track_id', 'track_id_clean', 'month', 'premium', 'hour_of_day'])]
-        print(X)
-
         y = data.not_skipped
 
         # ignoring the usual train - test splitting step bc its all going to be used for training
@@ -143,10 +139,16 @@ class Session:
 
         mini_tree = mini_tree.fit(X, y)
 
+
         # Ask it to make one prediction on the final row
 
         lastRow_X =  lastRowData.loc[:, ~data.columns.isin(['date', 'session_position','session_length','track_id_clean','not_skipped', 'session_id', 'track_id', 'track_id_clean', 'month', 'premium', 'hour_of_day'])]
         lastRow_y = lastRowData.not_skipped # keep the answer just in case, idk
+
+
+        #debug
+        print(X)
+        print(lastRow_X)
 
         prediction = mini_tree.predict(lastRow_X)
 
