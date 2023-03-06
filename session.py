@@ -114,8 +114,24 @@ class Session:
 
         # Still need to do the final row but thats ok...
 
+        # Get the trackID for this row
+        trackID = lastRow.iloc[0]['track_id_clean']
+        # Grab the track fetures from the trackData dataframe
+        trackFeatures = trackData.loc[trackData['track_id'] == trackID]
+        trackFeatures = trackFeatures.drop(columns='track_id')
+
+        # Make them both dictionaries for simplicity and I am stupid
+        features = trackFeatures.to_dict(orient='records')
+        context = lastRow.to_dict(orient='records')
+
+        # merge the context and the track features into one dictionary
+        dictData = context | features[0]
+
+        data = pd.DataFrame.from_records(dictData)
+
+
         # Use everything cept that session id and the not_skipped variable
-        X = data.loc[:, ~data.columns.isin(['not_skipped', 'session_id', 'track_id', 'track_id_clean'])]
+        X = data.loc[:, ~data.columns.isin(['session_position','session_length','track_id_clean','not_skipped', 'session_id', 'track_id', 'track_id_clean', 'month', 'premium', 'hour_of_day'])]
         print(X)
 
         y = data.not_skipped
