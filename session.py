@@ -84,9 +84,35 @@ class Session:
         Trains a random forest for one session 
         """
         # training data is the tracks (except final one)
-        data = self.contextMatrix
-
+        dataOld = self.contextMatrix
         lastRow = self.finalRow
+
+        listData = []
+
+        # get the track features for each context matrix row
+        for row in dataOld.iterrows():
+            # Get the trackID for this row
+            trackID = row.iloc[0]['track_id_clean']
+
+            # Grab the track fetures from the trackData dataframe
+            trackFeatures = trackData.loc[trackData['track_id'] == trackID]
+            trackFeatures = trackFeatures.drop(columns='track_id')
+
+            # Make them both dictionaries for simplicity and I am stupid
+            features = trackFeatures.to_dict(orient='records')
+            context = row.to_dict(orient='records')
+
+            # merge the context and the track features into one dictionary
+            dictData = context | features[0]
+
+            # Append row into list
+            listData.append(dictData)
+
+        # Turn list back into dataframe
+        data = pd.DataFrame.from_records(listData)
+        print(data)
+
+        # Still need to do the final row but thats ok...
 
         # Use everything cept that session id and the not_skipped variable
         X = data.loc[:, ~data.columns.isin(['not_skipped', 'session_id', 'track_id', 'track_id_clean'])]
