@@ -142,7 +142,7 @@ class Session:
 
         # Ask it to make one prediction on the final row
 
-        lastRow_X =  lastRowData.loc[:, ~data.columns.isin(['date', 'session_position','session_length','track_id_clean','not_skipped', 'session_id', 'track_id', 'track_id_clean', 'month', 'premium', 'hour_of_day'])]
+        lastRow_X =  lastRowData.loc[:, ~lastRowData.columns.isin(['date', 'session_position','session_length','track_id_clean','not_skipped', 'session_id', 'track_id', 'track_id_clean', 'month', 'premium', 'hour_of_day'])]
         lastRow_y = lastRowData.not_skipped # keep the answer just in case, idk
 
 
