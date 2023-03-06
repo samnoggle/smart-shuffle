@@ -122,11 +122,12 @@ class Session:
 
         # Make them both dictionaries for simplicity and I am stupid
         features = trackFeatures.to_dict(orient='records')
-        
+
         # merge the context and the track features into one dictionary
         dictData = context | features[0]
+        print(dictData)
 
-        data = pd.DataFrame.from_records(dictData)
+        data = pd.DataFrame.from_records(dictData, index=[0])
 
 
         # Use everything cept that session id and the not_skipped variable
