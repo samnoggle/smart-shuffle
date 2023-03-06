@@ -92,7 +92,7 @@ class Session:
         # get the track features for each context matrix row
         for row in dataOld.iterrows():
             # Get the trackID for this row
-            trackID = row.iloc[0]['track_id_clean']
+            trackID = row['track_id_clean']
 
             # Grab the track fetures from the trackData dataframe
             trackFeatures = trackData.loc[trackData['track_id'] == trackID]
