@@ -100,7 +100,7 @@ class Session:
 
             # Make them both dictionaries for simplicity and I am stupid
             features = trackFeatures.to_dict(orient='records')
-            context = row[1].to_dict(orient='records')
+            context = row[1].to_dict()
 
             # merge the context and the track features into one dictionary
             dictData = context | features[0]
