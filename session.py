@@ -131,7 +131,7 @@ class Session:
 
 
         # Use everything cept that session id and the not_skipped variable
-        X = data.loc[:, ~data.columns.isin(['session_position','session_length','track_id_clean','not_skipped', 'session_id', 'track_id', 'track_id_clean', 'month', 'premium', 'hour_of_day'])]
+        X = data.loc[:, ~data.columns.isin(['date', 'session_position','session_length','track_id_clean','not_skipped', 'session_id', 'track_id', 'track_id_clean', 'month', 'premium', 'hour_of_day'])]
         print(X)
 
         y = data.not_skipped
