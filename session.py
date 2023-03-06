@@ -125,9 +125,9 @@ class Session:
 
         # merge the context and the track features into one dictionary
         dictData = context | features[0]
-        print(dictData)
 
-        data = pd.DataFrame.from_records(dictData, index=[0])
+        lastRowData = pd.DataFrame.from_records(dictData, index=[0])
+        print(lastRowData)
 
 
         # Use everything cept that session id and the not_skipped variable
@@ -145,8 +145,8 @@ class Session:
 
         # Ask it to make one prediction on the final row
 
-        lastRow_X =  lastRow.loc[:, ~data.columns.isin(['not_skipped', 'session_id'])]
-        lastRow_y = lastRow.not_skipped # keep the answer just in case, idk
+        lastRow_X =  lastRowData.loc[:, ~data.columns.isin(['not_skipped', 'session_id'])]
+        lastRow_y = lastRowData.not_skipped # keep the answer just in case, idk
 
         prediction = mini_tree.predict(lastRow_X)
 
