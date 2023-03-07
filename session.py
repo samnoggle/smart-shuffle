@@ -153,7 +153,7 @@ class Session:
         prediction = mini_tree.predict(lastRow_X)
 
         # Add to the aggregates
-        s.running_importances += mini_tree.feature_importances_
+        running_importances += mini_tree.feature_importances_
 
         return prediction
 
