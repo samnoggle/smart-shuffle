@@ -83,6 +83,9 @@ class Session:
         """
         Trains a random forest for one session 
         """
+        # spaghetti code tings 
+        global running_importances
+        
         # training data is the tracks (except final one)
         dataOld = self.contextMatrix
         lastRow = self.finalRow
