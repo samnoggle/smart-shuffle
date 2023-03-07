@@ -5,15 +5,11 @@
     whether or not that song was skipped (for training)
 """
 
-import numpy as np
 import preprocessing as p
 import session as s
 import metrics as m
 import time
 import pandas as pd
-
-# Keeping track of the mini forest feature scores
-running_importances = np.zeros(29)
 
 
 # grabbing the data
@@ -175,7 +171,7 @@ print("Calculating metrics for {0} sessions took {1} seconds".format(
     len(sessions), t))
 
 # Feature importance of mini forests
-mean_importances = running_importances / len(sessions)
+mean_importances = s.getMean(len(sessions))
 
 
 print(mean_importances)

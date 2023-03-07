@@ -5,7 +5,6 @@ import pandas as pd
 import numpy as np
 import datetime
 from sklearn.ensemble import RandomForestClassifier
-import make_dataset as md
 
 
 # public track index where all track features
@@ -18,6 +17,8 @@ sessionLengths = []
 
 trackData = pd.DataFrame()
 
+# Keeping track of the mini forest feature scores
+running_importances = np.zeros(29)
 
 class Session:
     def __init__(self, _contextMatrix, _finalRow):
@@ -152,10 +153,12 @@ class Session:
         prediction = mini_tree.predict(lastRow_X)
 
         # Add to the aggregates
-        md.running_importances += mini_tree.feature_importances_
+        running_importances += mini_tree.feature_importances_
 
         return prediction
 
+    def getMean(n):
+        return running_importances / n
 
 
     def getDayOfWeek(self):
