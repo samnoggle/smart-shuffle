@@ -10,6 +10,26 @@ import session as s
 import metrics as m
 import time
 import pandas as pd
+import os.path
+
+def export_batch(path, data):
+    """
+    Prints chunk of data into the specified file
+
+    :param path: The file path to create or append to
+    :param data: The data to export
+    """
+
+    # turn the last session batch to datatframe
+    newData = pd.DataFrame.from_records(data)
+
+    # First check if the file already exists
+    if os.path.exists('path'):
+        # append to it (dont print column names)
+        newData.to_csv(path, mode='a', header=False, index=False)
+    else:
+        # make it (print the column names)
+        newData.to_csv(path, index=False)
 
 
 # grabbing the data
@@ -21,6 +41,9 @@ finalSongs = p.loadFinalTracks() # dataframe of final rows
 listData = []
 
 # going through each session
+
+# lets try printing it out every 500 sessions ??
+
 start = time.time()
 for i, session in enumerate(sessions):
 
@@ -158,11 +181,15 @@ for i, session in enumerate(sessions):
     # make a row for the decision tree (song context, all metrics, and if it was skipped or not)
     listData.append(dictData)
 
-# turn to datatframe
-newData = pd.DataFrame.from_records(listData)
 
-# Spit it out to a csv
-newData.to_csv('training_data/lastSongMetricsMiniTree.csv', index=False)
+    # TO EXPORT THE BATCHES IN INCREMENTS OF SESSIONS
+    if len(listData) == 500:
+        export_batch('training_data/lastSongMetricsMiniTree.csv', listData)
+        # please release this memory please
+        listData = []
+
+# Export the remnant batches
+export_batch('training_data/lastSongMetricsMiniTree.csv', listData)
 
 # Time taken
 end = time.time()
