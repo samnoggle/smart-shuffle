@@ -198,7 +198,7 @@ print("Calculating metrics for {0} sessions took {1} seconds".format(
     len(sessions), t))
 
 # Feature importance of mini forests
-mean_importances = s.getMean(len(sessions))
+mean_importances = s.running_importances / len(sessions)
 
 
 print(mean_importances)
