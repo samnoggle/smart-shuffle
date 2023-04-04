@@ -29,7 +29,7 @@ def export_batch(path, data):
         newData.to_csv(path, mode='a', header=False, index=False)
     else:
         # make it (print the column names)
-        newData.to_csv(path, index=False)
+        newData.to_csv(path, mode='a', index=False)
 
 
 # grabbing the data
@@ -144,7 +144,7 @@ for i, session in enumerate(sessions):
     metrics['neighborSkipped'] = neighborSkipped
 
     # Tack on if the mini forest thinks it's a skip
-    metrics['miniForestDecision'] = current.miniForestDecision()
+    metrics['babyTreeDecision'] = current.babyTreeDecision()[0]
 
     # Grab the Metadata for the dataset
     percentSkipped = (len(current.skipped) / len(current.userTracks)) * 100

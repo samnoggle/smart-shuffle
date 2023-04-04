@@ -4,8 +4,7 @@
 import pandas as pd
 import numpy as np
 import datetime
-from sklearn.ensemble import RandomForestClassifier
-
+from sklearn.tree import DecisionTreeClassifier
 
 # public track index where all track features
 # are loaded into
@@ -79,7 +78,7 @@ class Session:
                 self.skipped.append(trackFeats)
         sessionLengths.append(len(self.userTracks))
 
-    def miniForestDecision(self):
+    def babyTreeDecision(self):
         """
         Trains a random forest for one session 
         """
@@ -138,7 +137,7 @@ class Session:
         # ignoring the usual train - test splitting step bc its all going to be used for training
 
         # Create Decision Tree classifer object
-        mini_tree = RandomForestClassifier(max_depth=5, random_state=0)
+        mini_tree = DecisionTreeClassifier(random_state=0)
 
         mini_tree = mini_tree.fit(X, y)
 
